@@ -1,0 +1,14 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="zprint:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <properties id="maven-jee-properties">
+      <options>
+        <module>zprint</module>
+        <packaging>war</packaging>
+      </options>
+    </properties>
+    <root id="archive" name="br-zprint-0.0.1.war">
+      <element id="artifact" artifact-name="zprint:war exploded" />
+    </root>
+  </artifact>
+</component>
