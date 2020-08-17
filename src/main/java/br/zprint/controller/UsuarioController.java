@@ -23,6 +23,12 @@ public class UsuarioController {
         return new ResponseEntity<Usuario>(usuario.get(), HttpStatus.OK);
     }
 
+    @GetMapping(value = "/{email}/email", produces = "application/json")
+    public ResponseEntity userByEmail(@PathVariable(value = "email") String email) {
+        Usuario usuario = repository.findByLogin(email);
+        return new ResponseEntity<Usuario>(usuario, HttpStatus.OK);
+    }
+
     @GetMapping(value = "", produces = "application/json")
     public ResponseEntity<List<Usuario>> list() {
         List<Usuario> list = (List<Usuario>) repository.findAll();

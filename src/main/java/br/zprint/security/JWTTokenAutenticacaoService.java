@@ -5,6 +5,7 @@ import br.zprint.model.Usuario;
 import br.zprint.repository.UsuarioRepository;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
@@ -19,7 +20,7 @@ import java.util.Date;
 @Component
 public class JWTTokenAutenticacaoService  {
 
-    private static final long EXPIRATION_TIME = 172800000;
+    private static final long EXPIRATION_TIME = 3600000;
     private static final String SECRET = "dkk&%$kks983794--";
     private static final String TOKEN_PREFIX = "Bearer";
     private static final String HEADER_STRING = "Authorization";
@@ -32,34 +33,57 @@ public class JWTTokenAutenticacaoService  {
                          .compact();
 
         String token = TOKEN_PREFIX + " " + JWT;
-
         response.addHeader(HEADER_STRING, token);
+
+        liberarcaoCors(response);
         response.getWriter().write("{\"Authorization\": \""+token+"\"}");
     }
 
-    public Authentication getAuthentication(HttpServletRequest request) {
+    public Authentication getAuthentication(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String token = request.getHeader(HEADER_STRING);
 
-        if(token != null) {
-            String user = Jwts.parser()
-                              .setSigningKey(SECRET)
-                              .parseClaimsJws(token.replace(TOKEN_PREFIX, ""))
-                              .getBody().getSubject();
+        try {
+            if (token != null) {
+                String user = Jwts.parser()
+                        .setSigningKey(SECRET)
+                        .parseClaimsJws(token.replace(TOKEN_PREFIX, ""))
+                        .getBody().getSubject();
 
-            if(user != null) {
-                Usuario usuario = ApplicationContextLoad.getApplicationContext()
-                        .getBean(UsuarioRepository.class).findByLogin(user);
+                if (user != null) {
+                    Usuario usuario = ApplicationContextLoad.getApplicationContext()
+                            .getBean(UsuarioRepository.class).findByLogin(user);
 
-                if(usuario != null) {
-                    return new UsernamePasswordAuthenticationToken(
-                        usuario.getEmail(),
-                        usuario.getSenha(),
-                        usuario.getAuthorities()
-                    );
+                    if (usuario != null) {
+
+                        return new UsernamePasswordAuthenticationToken(
+                                usuario.getEmail(),
+                                usuario.getSenha(),
+                                usuario.getAuthorities()
+                        );
+                    }
                 }
             }
+        }catch (io.jsonwebtoken.ExpiredJwtException e){}
+
+        liberarcaoCors(response);
+        return null;
+    }
+
+    private void liberarcaoCors(HttpServletResponse response) {
+        if(response.getHeader("Access-Control-Allow-Origin") == null) {
+            response.addHeader("Access-Control-Allow-Origin", "*");
         }
 
-        return null;
+        if(response.getHeader("Access-Control-Allow-Headers") == null) {
+            response.addHeader("Access-Control-Allow-Headers", "*");
+        }
+
+        if(response.getHeader("Access-Control-Request-Headers") == null) {
+            response.addHeader("Access-Control-Request-Headers", "*");
+        }
+
+        if(response.getHeader("Access-Control-Allow-Methods") == null) {
+            response.addHeader("Access-Control-Allow-Methods", "*");
+        }
     }
 }
