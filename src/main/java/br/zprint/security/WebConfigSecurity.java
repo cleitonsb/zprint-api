@@ -30,6 +30,12 @@ public class WebConfigSecurity extends WebSecurityConfigurerAdapter {
             .authorizeRequests().antMatchers("/").permitAll()
             .antMatchers("/index").permitAll()
             .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+
+            .antMatchers(HttpMethod.GET, "/user/**").hasAuthority("usuario_get")
+            .antMatchers(HttpMethod.POST, "/user/**").hasAuthority("usuario_post")
+            .antMatchers(HttpMethod.PUT, "/user/**").hasAuthority("usuario_put")
+            .antMatchers(HttpMethod.DELETE, "/user/**").hasAuthority("usuario_delete")
+
             .anyRequest().authenticated().and().logout().logoutSuccessUrl("/index")
             .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
             .and()
