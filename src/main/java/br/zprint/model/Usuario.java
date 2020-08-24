@@ -1,14 +1,9 @@
 package br.zprint.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
 import javax.persistence.*;
-import java.io.Serializable;
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Entity
 @Table(name = "usuarios")
@@ -23,6 +18,7 @@ public class Usuario implements UserDetails {
 
     @Column(unique = true)
     private String email;
+
     private String senha;
     private String celular;
     private String telefone;
@@ -30,26 +26,22 @@ public class Usuario implements UserDetails {
     @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Endereco> enderecos;
 
-    @OneToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-        name = "usuarios_role",
-        uniqueConstraints = @UniqueConstraint(columnNames = {"usuario_id", "role_id"}, name = "unique_role_user"),
-        joinColumns = @JoinColumn(
-            name = "usuario_id",
-            referencedColumnName = "id",
-            table = "usuarios",
-            unique = false,
-            foreignKey = @ForeignKey(name = "usuario_fk", value = ConstraintMode.CONSTRAINT)
-        ),
-        inverseJoinColumns = @JoinColumn(
-            name = "role_id",
-            referencedColumnName = "id",
-            table = "role",
-            unique = false,
-            foreignKey = @ForeignKey(name = "role_fk", value = ConstraintMode.CONSTRAINT)
-        )
-    )
-    private List<Role> roles;
+    @ManyToOne
+    @JoinColumn(name = "perfil_id", nullable = false)
+    private Perfil perfil;
+
+    public Usuario() {}
+
+    public Usuario(Long id, String nome, String email, String senha, String celular, String telefone, List<Endereco> enderecos, Perfil perfil) {
+        this.id = id;
+        this.nome = nome;
+        this.email = email;
+        this.senha = senha;
+        this.celular = celular;
+        this.telefone = telefone;
+        this.enderecos = enderecos;
+        this.perfil = perfil;
+    }
 
     public Long getId() {
         return id;
@@ -107,71 +99,71 @@ public class Usuario implements UserDetails {
         this.enderecos = enderecos;
     }
 
+    public Perfil getPerfil() {
+        return perfil;
+    }
 
+    public void setPerfil(Perfil perfil) {
+        this.perfil = perfil;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        Set<Permissao> permissoes = new HashSet<Permissao>();
+        if(perfil != null){
+            permissoes.addAll(perfil.getPermissoes());
+        }
+
+        return permissoes;
+    }
+
+    @Override
+    public String getPassword() {
+        return senha;
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Usuario usuario = (Usuario) o;
-        return Objects.equals(id, usuario.id);
+        return Objects.equals(id, usuario.id) &&
+                Objects.equals(nome, usuario.nome) &&
+                Objects.equals(email, usuario.email) &&
+                Objects.equals(senha, usuario.senha) &&
+                Objects.equals(celular, usuario.celular) &&
+                Objects.equals(telefone, usuario.telefone) &&
+                Objects.equals(enderecos, usuario.enderecos) &&
+                Objects.equals(perfil, usuario.perfil);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
-    }
-
-    @Override
-    public String toString() {
-        return "Usuario{" +
-                "id=" + id +
-                ", nome='" + nome + '\'' +
-                ", email='" + email + '\'' +
-                ", senha='" + senha + '\'' +
-                ", celular='" + celular + '\'' +
-                ", telefone='" + telefone + '\'' +
-                '}';
-    }
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return this.roles;
-    }
-
-    @JsonIgnore
-    @Override
-    public String getPassword() {
-        return this.senha;
-    }
-
-    @JsonIgnore
-    @Override
-    public String getUsername() {
-        return this.email;
-    }
-
-    @JsonIgnore
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @JsonIgnore
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @JsonIgnore
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @JsonIgnore
-    @Override
-    public boolean isEnabled() {
-        return true;
+        return Objects.hash(id, nome, email, senha, celular, telefone, enderecos, perfil);
     }
 }
