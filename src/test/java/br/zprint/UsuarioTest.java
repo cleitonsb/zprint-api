@@ -24,11 +24,11 @@ public class UsuarioTest {
     @Test
     public void usuarioStore(){
 
-        Optional<Perfil> perfil = perfilRepository.findById(13L);
+        Optional<Perfil> perfil = perfilRepository.findById(35L);
 
         Usuario usuario = new Usuario();
-        usuario.setNome("Cleiton");
-        usuario.setEmail("cleiton@admin.com");
+        usuario.setNome("Cleiton 7");
+        usuario.setEmail("cleiton7@admin.com");
         usuario.setCelular("61984624081");
         usuario.setSenha(new BCryptPasswordEncoder().encode("123"));
         usuario.setTelefone("6134626333");

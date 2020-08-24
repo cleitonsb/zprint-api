@@ -10,6 +10,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -20,7 +22,7 @@ import java.util.Date;
 @Component
 public class JWTTokenAutenticacaoService  {
 
-    private static final long EXPIRATION_TIME = 3600000;
+    private static final long EXPIRATION_TIME = 172800000;
     private static final String SECRET = "dkk&%$kks983794--";
     private static final String TOKEN_PREFIX = "Bearer";
     private static final String HEADER_STRING = "Authorization";
@@ -54,7 +56,6 @@ public class JWTTokenAutenticacaoService  {
                             .getBean(UsuarioRepository.class).findByLogin(user);
 
                     if (usuario != null) {
-
                         return new UsernamePasswordAuthenticationToken(
                                 usuario.getEmail(),
                                 usuario.getSenha(),

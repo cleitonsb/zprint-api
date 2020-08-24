@@ -24,6 +24,11 @@ public class PerfilTest {
         perfil.setPermissoes(this.permissoes());
 
         repository.save(perfil);
+
+        Perfil perfil2 = new Perfil();
+        perfil2.setNome("Usuário");
+
+        repository.save(perfil2);
     }
 
     public List<Permissao> permissoes() {

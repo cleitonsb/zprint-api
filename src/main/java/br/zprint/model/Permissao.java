@@ -13,23 +13,23 @@ public class Permissao implements GrantedAuthority {
 
     private static final long serialVersionUID = 1L;
 
-    public Permissao() {
-    }
-
-    public Permissao(String nome, String url, String metodo) {
-        this.nome = nome;
-        this.url = url;
-        this.metodo = metodo;
-    }
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     private String nome;
-    private String url;
+    private String rota;
     private String metodo;
     private String nomeRegra;
+
+    public Permissao() {
+    }
+
+    public Permissao(String nome, String rota, String metodo) {
+        this.nome = nome;
+        this.rota = rota;
+        this.metodo = metodo;
+    }
 
     public Long getId() {
         return id;
@@ -47,12 +47,12 @@ public class Permissao implements GrantedAuthority {
         this.nome = nome;
     }
 
-    public String getUrl() {
-        return url;
+    public String getRota() {
+        return rota;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
+    public void setRota(String rota) {
+        this.rota = rota;
     }
 
     public String getMetodo() {
@@ -83,12 +83,12 @@ public class Permissao implements GrantedAuthority {
         Permissao permissao = (Permissao) o;
         return Objects.equals(id, permissao.id) &&
                 Objects.equals(nome, permissao.nome) &&
-                Objects.equals(url, permissao.url);
+                Objects.equals(rota, permissao.rota);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, nome, url);
+        return Objects.hash(id, nome, rota);
     }
 
     @Override
@@ -96,7 +96,7 @@ public class Permissao implements GrantedAuthority {
         return "Permissao{" +
                 "id=" + id +
                 ", nome='" + nome + '\'' +
-                ", url='" + url + '\'' +
+                ", url='" + rota + '\'' +
                 '}';
     }
 }

@@ -1,6 +1,5 @@
 package br.zprint.controller;
 
-import br.zprint.dto.UsuarioDTO;
 import br.zprint.model.Usuario;
 import br.zprint.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,14 +9,13 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping(value = "/usuario")
-public class UsuarioController {
+@RequestMapping(value = "/perfil")
+public class PerfilController {
 
     @Autowired
     UsuarioRepository repository;
@@ -31,7 +29,7 @@ public class UsuarioController {
     @GetMapping(value = "/{email}/email", produces = "application/json")
     public ResponseEntity userByEmail(@PathVariable(value = "email") String email) {
         Usuario usuario = repository.findByLogin(email);
-        return new ResponseEntity<UsuarioDTO>(new UsuarioDTO(usuario), HttpStatus.OK);
+        return new ResponseEntity<Usuario>(usuario, HttpStatus.OK);
     }
 
     @GetMapping(value = {"/page/{page}", "/page/{page}/busca/{param}"}, produces = "application/json")
@@ -56,22 +54,11 @@ public class UsuarioController {
         return new ResponseEntity<List<Usuario>>(list, HttpStatus.OK);
     }
 
-    @PostMapping(value = "")
-    public ResponseEntity<Usuario> upload(@RequestParam(name = "avatar", required = true) MultipartFile avatar) {
-        Usuario usuario1 = new Usuario();
-
-        //Usuario usuarioStored = repository.save(usuario);
-        return new ResponseEntity<Usuario>(usuario1, HttpStatus.OK);
-    }
-
-    @RequestMapping(value = "", method = RequestMethod.POST, consumes = {"multipart/mixed"})
-    public ResponseEntity<Usuario> store(@RequestPart Usuario usuario, @RequestPart(name = "avatar", required = false) MultipartFile avatar) {
-
-
+    @PostMapping(value = "", produces = "application/json")
+    public ResponseEntity<Usuario> store(@RequestBody Usuario usuario) {
         Usuario usuarioStored = repository.save(usuario);
         return new ResponseEntity<Usuario>(usuarioStored, HttpStatus.OK);
     }
-
 
     @PutMapping(value = "", produces = "application/json")
     public ResponseEntity<Usuario> update(@RequestBody Usuario usuario) {
