@@ -1,7 +1,9 @@
 package br.zprint.controller;
 
 import br.zprint.dto.UsuarioDTO;
+import br.zprint.model.Perfil;
 import br.zprint.model.Usuario;
+import br.zprint.repository.PerfilRepository;
 import br.zprint.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -21,6 +23,9 @@ public class UsuarioController {
 
     @Autowired
     UsuarioRepository repository;
+
+    @Autowired
+    PerfilRepository perfilRepository;
 
     @GetMapping(value = "/{id}", produces = "application/json")
     public ResponseEntity init(@PathVariable(value = "id") Long id) {
@@ -56,22 +61,29 @@ public class UsuarioController {
         return new ResponseEntity<List<Usuario>>(list, HttpStatus.OK);
     }
 
-    @PostMapping(value = "")
-    public ResponseEntity<Usuario> upload(@RequestParam(name = "avatar", required = true) MultipartFile avatar) {
-        Usuario usuario1 = new Usuario();
+//    @PostMapping(value = "")
+//    public ResponseEntity<Usuario> upload(@RequestParam(name = "avatar", required = true) MultipartFile avatar) {
+//        Usuario usuario1 = new Usuario();
+//
+//        //Usuario usuarioStored = repository.save(usuario);
+//        return new ResponseEntity<Usuario>(usuario1, HttpStatus.OK);
+//    }
 
-        //Usuario usuarioStored = repository.save(usuario);
-        return new ResponseEntity<Usuario>(usuario1, HttpStatus.OK);
-    }
+    @PostMapping(value = "", produces = "application/json")
+    public ResponseEntity<Usuario> store(@RequestBody Usuario usuario) {
 
-    @RequestMapping(value = "", method = RequestMethod.POST, consumes = {"multipart/mixed"})
-    public ResponseEntity<Usuario> store(@RequestPart Usuario usuario, @RequestPart(name = "avatar", required = false) MultipartFile avatar) {
+        if(usuario.getPerfil() == null) {
+            Optional<Perfil> perfil = perfilRepository.findById(10L);
+            usuario.setPerfil(perfil.get());
+        }
 
+        for (int i = 0; i < usuario.getEnderecos().size(); i++) {
+            usuario.getEnderecos().get(i).setUsuario(usuario);
+        }
 
         Usuario usuarioStored = repository.save(usuario);
         return new ResponseEntity<Usuario>(usuarioStored, HttpStatus.OK);
     }
-
 
     @PutMapping(value = "", produces = "application/json")
     public ResponseEntity<Usuario> update(@RequestBody Usuario usuario) {

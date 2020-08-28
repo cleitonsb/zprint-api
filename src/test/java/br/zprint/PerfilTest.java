@@ -26,6 +26,7 @@ public class PerfilTest {
         repository.save(perfil);
 
         Perfil perfil2 = new Perfil();
+        perfil2.setId(2L);
         perfil2.setNome("Usuário");
 
         repository.save(perfil2);
@@ -34,14 +35,15 @@ public class PerfilTest {
     public List<Permissao> permissoes() {
         List<Permissao> permissoes = new ArrayList<Permissao>();
 
-        permissoes.add(new Permissao("Usuário", "/user", "GET"));
-        permissoes.add(new Permissao("Usuário", "/user", "POST"));
-        permissoes.add(new Permissao("Usuário", "/user", "PUT"));
-        permissoes.add(new Permissao("Usuário", "/user", "DELETE"));
-        permissoes.add(new Permissao("Perfil", "/perfil", "GET"));
-        permissoes.add(new Permissao("Perfil", "/perfil", "POST"));
-        permissoes.add(new Permissao("Perfil", "/perfil", "PUT"));
-        permissoes.add(new Permissao("Perfil", "/perfil", "DELETE"));
+        permissoes.add(new Permissao("Usuário", "/usuario", "GET", "usuario_get"));
+        permissoes.add(new Permissao("Usuário", "/usuario", "POST", "usuario_post"));
+        permissoes.add(new Permissao("Usuário", "/usuario", "PUT", "usuario_put"));
+        permissoes.add(new Permissao("Usuário", "/usuario", "DELETE", "usuario_delete"));
+        permissoes.add(new Permissao("Perfil", "/perfil", "GET", "perfil_get"));
+        permissoes.add(new Permissao("Perfil", "/perfil", "POST", "perfil_post"));
+        permissoes.add(new Permissao("Perfil", "/perfil", "PUT", "perfil_put"));
+        permissoes.add(new Permissao("Perfil", "/perfil", "DELETE", "perfil_delete"));
+        //permissoes.add(new Permissao("", "", "", ""));
 
         return permissoes;
     }

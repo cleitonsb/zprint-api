@@ -25,10 +25,11 @@ public class Permissao implements GrantedAuthority {
     public Permissao() {
     }
 
-    public Permissao(String nome, String rota, String metodo) {
+    public Permissao(String nome, String rota, String metodo, String nomeRegra) {
         this.nome = nome;
         this.rota = rota;
         this.metodo = metodo;
+        this.nomeRegra = nomeRegra;
     }
 
     public Long getId() {
