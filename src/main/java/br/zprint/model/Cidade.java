@@ -17,7 +17,6 @@ public class Cidade implements Serializable {
     private String nome;
     private String ibge;
 
-    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "estado_id", nullable = false)
     private Estado estado;

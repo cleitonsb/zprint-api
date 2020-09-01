@@ -5,12 +5,15 @@ import br.zprint.model.Perfil;
 import br.zprint.model.Usuario;
 import br.zprint.repository.PerfilRepository;
 import br.zprint.repository.UsuarioRepository;
+import br.zprint.service.UploadImageService;
+import br.zprint.service.UploadService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -26,6 +29,9 @@ public class UsuarioController {
 
     @Autowired
     PerfilRepository perfilRepository;
+
+    @Autowired
+    UploadImageService uploadImageService;
 
     @GetMapping(value = "/{id}", produces = "application/json")
     public ResponseEntity init(@PathVariable(value = "id") Long id) {
@@ -61,13 +67,12 @@ public class UsuarioController {
         return new ResponseEntity<List<Usuario>>(list, HttpStatus.OK);
     }
 
-//    @PostMapping(value = "")
-//    public ResponseEntity<Usuario> upload(@RequestParam(name = "avatar", required = true) MultipartFile avatar) {
-//        Usuario usuario1 = new Usuario();
-//
-//        //Usuario usuarioStored = repository.save(usuario);
-//        return new ResponseEntity<Usuario>(usuario1, HttpStatus.OK);
-//    }
+    @PostMapping(value = "/upload")
+    public ResponseEntity upload(@RequestParam(name = "avatar", required = true) MultipartFile avatar, @RequestParam("usuarioid") Long usuarioId) {
+
+        String res = uploadImageService.uploadFile(avatar, usuarioId);
+        return new ResponseEntity<Usuario>(HttpStatus.OK);
+    }
 
     @PostMapping(value = "", produces = "application/json")
     public ResponseEntity<Usuario> store(@RequestBody Usuario usuario) {
