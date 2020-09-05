@@ -8,6 +8,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -64,7 +65,15 @@ public class JWTTokenAutenticacaoService  {
                     }
                 }
             }
-        }catch (io.jsonwebtoken.ExpiredJwtException e){}
+        }catch (io.jsonwebtoken.ExpiredJwtException e){
+            e.printStackTrace();
+        }catch (AuthenticationException e){
+            e.printStackTrace();
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally {
+            System.out.printf("erro");
+        }
 
         liberarcaoCors(response);
         return null;

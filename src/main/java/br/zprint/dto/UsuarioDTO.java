@@ -18,6 +18,7 @@ public class UsuarioDTO implements Serializable {
     private String telefone;
     private List<Endereco> enderecos;
     private PerfilDTO perfil;
+    private String avatar;
 
     public UsuarioDTO(Usuario usuario) {
         this.id = usuario.getId();
@@ -27,6 +28,7 @@ public class UsuarioDTO implements Serializable {
         this.telefone = usuario.getTelefone();
         this.enderecos = usuario.getEnderecos();
         this.perfil = new PerfilDTO(usuario.getPerfil());
+        this.avatar = usuario.getAvatar();
     }
 
     public Long getId() {
@@ -83,5 +85,13 @@ public class UsuarioDTO implements Serializable {
 
     public void setPerfil(PerfilDTO perfil) {
         this.perfil = perfil;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 }

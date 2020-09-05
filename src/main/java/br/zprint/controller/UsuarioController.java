@@ -6,17 +6,16 @@ import br.zprint.model.Usuario;
 import br.zprint.repository.PerfilRepository;
 import br.zprint.repository.UsuarioRepository;
 import br.zprint.service.UploadImageService;
-import br.zprint.service.UploadService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.StringUtils;
+import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -70,7 +69,14 @@ public class UsuarioController {
     @PostMapping(value = "/upload")
     public ResponseEntity upload(@RequestParam(name = "avatar", required = true) MultipartFile avatar, @RequestParam("usuarioid") Long usuarioId) {
 
-        String res = uploadImageService.uploadFile(avatar, usuarioId);
+        Optional<Usuario> usuarioOpt = repository.findById(usuarioId);
+        Usuario usuario = usuarioOpt.get();
+
+        String target = uploadImageService.uploadFile(avatar, usuario);
+
+        usuario.setAvatar(target);
+        repository.save(usuario);
+
         return new ResponseEntity<Usuario>(HttpStatus.OK);
     }
 
@@ -83,7 +89,11 @@ public class UsuarioController {
         }
 
         for (int i = 0; i < usuario.getEnderecos().size(); i++) {
-            usuario.getEnderecos().get(i).setUsuario(usuario);
+            if(usuario.getEnderecos().get(i).getCep() == null) {
+                usuario.getEnderecos().remove(usuario.getEnderecos().get(i));
+            }else{
+                usuario.getEnderecos().get(i).setUsuario(usuario);
+            }
         }
 
         Usuario usuarioStored = repository.save(usuario);
@@ -95,4 +105,29 @@ public class UsuarioController {
         Usuario usuarioStored = repository.save(usuario);
         return new ResponseEntity<Usuario>(usuarioStored, HttpStatus.OK);
     }
+
+    @GetMapping(value = "/avatar/{nomeArquivo}", produces = MediaType.IMAGE_JPEG_VALUE)
+    public ResponseEntity<byte[]> getImage(@PathVariable(value = "nomeArquivo") String nomeArquivo) throws Exception {
+        try {
+            byte[] bytes = StreamUtils.copyToByteArray((uploadImageService.getFile(nomeArquivo + ".jpg")).getInputStream());
+
+            return ResponseEntity
+                    .ok()
+                    .contentType(MediaType.IMAGE_JPEG)
+                    .body(bytes);
+        }catch (Exception ex) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @GetMapping(value = "/remove/{id}", produces = "application/json")
+    public ResponseEntity delete(@PathVariable(value = "id") Long id) {
+        try{
+            repository.softDelete(id);
+            return new ResponseEntity(HttpStatus.OK);
+        }catch (Exception ex) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
 }
