@@ -54,7 +54,9 @@ public class ProdutoControle {
     }
 
     @GetMapping(value = {"", "/busca/{param}"}, produces = "application/json")
-    public ResponseEntity<List<Produto>> listByAll(@PathVariable(value = "param", required = false) String param) {
+    public ResponseEntity<List<Produto>> listAll(@PathVariable(value = "param", required = false) String param) {
+        param = (param != null) ? param.toUpperCase() : "";
+
         List<Produto> list = (List<Produto>) repository.findByParam(param);
         return new ResponseEntity<List<Produto>>(list, HttpStatus.OK);
     }
