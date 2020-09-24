@@ -30,9 +30,12 @@ public class Usuario implements UserDetails {
     @JoinColumn(name = "perfil_id", nullable = false)
     private Perfil perfil;
 
+    private String avatar;
+    private Boolean situacao;
+
     public Usuario() {}
 
-    public Usuario(Long id, String nome, String email, String senha, String celular, String telefone, List<Endereco> enderecos, Perfil perfil) {
+    public Usuario(Long id, String nome, String email, String senha, String celular, String telefone, List<Endereco> enderecos, Perfil perfil, String avatar, Boolean situacao) {
         this.id = id;
         this.nome = nome;
         this.email = email;
@@ -41,6 +44,8 @@ public class Usuario implements UserDetails {
         this.telefone = telefone;
         this.enderecos = enderecos;
         this.perfil = perfil;
+        this.avatar = avatar;
+        this.situacao = situacao;
     }
 
     public Long getId() {
@@ -105,6 +110,22 @@ public class Usuario implements UserDetails {
 
     public void setPerfil(Perfil perfil) {
         this.perfil = perfil;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
+    public Boolean getSituacao() {
+        return situacao;
+    }
+
+    public void setSituacao(Boolean situacao) {
+        this.situacao = situacao;
     }
 
     @Override

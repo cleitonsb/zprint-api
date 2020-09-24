@@ -31,24 +31,30 @@ public class WebConfigSecurity extends WebSecurityConfigurerAdapter {
             .antMatchers("/index").permitAll()
             .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 
-            .antMatchers(HttpMethod.GET, "/user/**").hasAuthority("usuario_get")
-            .antMatchers(HttpMethod.POST, "/user/**").hasAuthority("usuario_post")
-            .antMatchers(HttpMethod.PUT, "/user/**").hasAuthority("usuario_put")
-            .antMatchers(HttpMethod.DELETE, "/user/**").hasAuthority("usuario_delete")
+            .antMatchers(HttpMethod.GET, "/usuario/avatar/**").permitAll()
+            .antMatchers(HttpMethod.GET, "/usuario/**").hasAuthority("usuario_get")
+            .antMatchers(HttpMethod.POST, "/usuario/**").hasAuthority("usuario_post")
+            .antMatchers(HttpMethod.PUT, "/usuario/**").hasAuthority("usuario_put")
+            .antMatchers(HttpMethod.DELETE, "/usuario/**").hasAuthority("usuario_delete")
+
+            .antMatchers(HttpMethod.GET, "/produto/**").hasAuthority("produto_get")
+            .antMatchers(HttpMethod.POST, "/produto/**").hasAuthority("produto_post")
+            .antMatchers(HttpMethod.PUT, "/produto/**").hasAuthority("produto_put")
+            .antMatchers(HttpMethod.DELETE, "/produto/**").hasAuthority("produto_delete")
 
             .anyRequest().authenticated().and().logout().logoutSuccessUrl("/index")
             .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
             .and()
             .addFilterBefore(new JWTLoginFilter("/login", authenticationManager()), UsernamePasswordAuthenticationFilter.class)
             .addFilterBefore(new JWTApiAuthenticacaoFilter(), UsernamePasswordAuthenticationFilter.class)
-//            .exceptionHandling().authenticationEntryPoint(((httpServletRequest, httpServletResponse, e) -> {
-//                String json = String.format("{\"message\": \"%s\"}", "Usuário ou senha inválida");
-//                httpServletResponse.setStatus(httpServletResponse.SC_FORBIDDEN);
-//                httpServletResponse.setContentType("application/json");
-//                httpServletResponse.setCharacterEncoding("UTF-8");
-//                httpServletResponse.getWriter().write(json);
-//            }))
-                ;
+            .exceptionHandling().authenticationEntryPoint(((httpServletRequest, httpServletResponse, e) -> {
+                String json = String.format("{\"message\": \"%s\"}", "Usuário ou senha inválida");
+                httpServletResponse.setStatus(httpServletResponse.SC_UNAUTHORIZED);
+                httpServletResponse.setContentType("application/json");
+                httpServletResponse.setCharacterEncoding("UTF-8");
+                httpServletResponse.getWriter().write(json);
+            }))
+        ;
     }
 
     @Override
