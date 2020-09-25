@@ -56,10 +56,20 @@ public class PerfilTest {
 //        permissoes.add(new Permissao("Caixa", "/caixa", "POST", "caixa_post"));
 //        permissoes.add(new Permissao("Caixa", "/caixa", "PUT", "caixa_put"));
 //        permissoes.add(new Permissao("Caixa", "/caixa", "DELETE", "caixa_delete"));
-        permissoes.add(new Permissao("Pagamento", "/pagamento", "GET", "pagamento_get"));
-        permissoes.add(new Permissao("Pagamento", "/pagamento", "POST", "pagamento_post"));
-        permissoes.add(new Permissao("Pagamento", "/pagamento", "PUT", "pagamento_put"));
-        permissoes.add(new Permissao("Pagamento", "/pagamento", "DELETE", "pagamento_delete"));
+//        permissoes.add(new Permissao("Pagamento", "/pagamento", "GET", "pagamento_get"));
+//        permissoes.add(new Permissao("Pagamento", "/pagamento", "POST", "pagamento_post"));
+//        permissoes.add(new Permissao("Pagamento", "/pagamento", "PUT", "pagamento_put"));
+//        permissoes.add(new Permissao("Pagamento", "/pagamento", "DELETE", "pagamento_delete"));
+
+        permissoes.add(new Permissao("Conta", "/conta", "GET", "conta_get"));
+        permissoes.add(new Permissao("Conta", "/conta", "POST", "conta_post"));
+        permissoes.add(new Permissao("Conta", "/conta", "PUT", "conta_put"));
+        permissoes.add(new Permissao("Conta", "/conta", "DELETE", "conta_delete"));
+
+        permissoes.add(new Permissao("Compra", "/compra", "GET", "compra_get"));
+        permissoes.add(new Permissao("Compra", "/compra", "POST", "compra_post"));
+        permissoes.add(new Permissao("Compra", "/compra", "PUT", "compra_put"));
+        permissoes.add(new Permissao("Compra", "/compra", "DELETE", "compra_delete"));
         //permissoes.add(new Permissao("", "", "", ""));
 
         return permissoes;
