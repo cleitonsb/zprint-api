@@ -27,7 +27,7 @@ public class WebConfigSecurity extends WebSecurityConfigurerAdapter {
         http.csrf()
             .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
             .disable()
-            .authorizeRequests().antMatchers("/").permitAll()
+            .authorizeRequests()
             .antMatchers("/index").permitAll()
             .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 
@@ -41,6 +41,23 @@ public class WebConfigSecurity extends WebSecurityConfigurerAdapter {
             .antMatchers(HttpMethod.POST, "/produto/**").hasAuthority("produto_post")
             .antMatchers(HttpMethod.PUT, "/produto/**").hasAuthority("produto_put")
             .antMatchers(HttpMethod.DELETE, "/produto/**").hasAuthority("produto_delete")
+
+            .antMatchers(HttpMethod.GET, "/venda/**").hasAuthority("venda_get")
+            .antMatchers(HttpMethod.POST, "/venda/**").hasAuthority("venda_post")
+            .antMatchers(HttpMethod.PUT, "/venda/**").hasAuthority("venda_put")
+            .antMatchers(HttpMethod.DELETE, "/venda/**").hasAuthority("venda_delete")
+
+            .antMatchers(HttpMethod.GET, "/caixa/**").hasAuthority("caixa_get")
+            .antMatchers(HttpMethod.POST, "/caixa/**").hasAuthority("caixa_post")
+            .antMatchers(HttpMethod.PUT, "/caixa/**").hasAuthority("caixa_put")
+            .antMatchers(HttpMethod.DELETE, "/caixa/**").hasAuthority("caixa_delete")
+
+            .antMatchers(HttpMethod.GET, "/pagamento/**").hasAuthority("pagamento_get")
+            .antMatchers(HttpMethod.POST, "/pagamento/**").hasAuthority("pagamento_post")
+            .antMatchers(HttpMethod.PUT, "/pagamento/**").hasAuthority("pagamento_put")
+            .antMatchers(HttpMethod.DELETE, "/pagamento/**").hasAuthority("pagamento_delete")
+
+            .antMatchers("/**").denyAll()
 
             .anyRequest().authenticated().and().logout().logoutSuccessUrl("/index")
             .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))

@@ -44,10 +44,22 @@ public class PerfilTest {
 //        permissoes.add(new Permissao("Perfil", "/perfil", "POST", "perfil_post"));
 //        permissoes.add(new Permissao("Perfil", "/perfil", "PUT", "perfil_put"));
 //        permissoes.add(new Permissao("Perfil", "/perfil", "DELETE", "perfil_delete"));
-        permissoes.add(new Permissao("Produto", "/produto", "GET", "produto_get"));
-        permissoes.add(new Permissao("Produto", "/produto", "POST", "produto_post"));
-        permissoes.add(new Permissao("Produto", "/produto", "PUT", "produto_put"));
-        permissoes.add(new Permissao("Produto", "/produto", "DELETE", "produto_delete"));
+//        permissoes.add(new Permissao("Produto", "/produto", "GET", "produto_get"));
+//        permissoes.add(new Permissao("Produto", "/produto", "POST", "produto_post"));
+//        permissoes.add(new Permissao("Produto", "/produto", "PUT", "produto_put"));
+//        permissoes.add(new Permissao("Produto", "/produto", "DELETE", "produto_delete"));
+//        permissoes.add(new Permissao("Venda", "/venda", "GET", "venda_get"));
+//        permissoes.add(new Permissao("Venda", "/venda", "POST", "venda_post"));
+//        permissoes.add(new Permissao("Venda", "/venda", "PUT", "venda_put"));
+//        permissoes.add(new Permissao("Venda", "/venda", "DELETE", "venda_delete"));
+//        permissoes.add(new Permissao("Caixa", "/caixa", "GET", "caixa_get"));
+//        permissoes.add(new Permissao("Caixa", "/caixa", "POST", "caixa_post"));
+//        permissoes.add(new Permissao("Caixa", "/caixa", "PUT", "caixa_put"));
+//        permissoes.add(new Permissao("Caixa", "/caixa", "DELETE", "caixa_delete"));
+        permissoes.add(new Permissao("Pagamento", "/pagamento", "GET", "pagamento_get"));
+        permissoes.add(new Permissao("Pagamento", "/pagamento", "POST", "pagamento_post"));
+        permissoes.add(new Permissao("Pagamento", "/pagamento", "PUT", "pagamento_put"));
+        permissoes.add(new Permissao("Pagamento", "/pagamento", "DELETE", "pagamento_delete"));
         //permissoes.add(new Permissao("", "", "", ""));
 
         return permissoes;

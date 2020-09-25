@@ -1,5 +1,6 @@
 package br.zprint.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
@@ -23,9 +24,11 @@ public class Usuario implements UserDetails {
     private String celular;
     private String telefone;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Endereco> enderecos;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "perfil_id", nullable = false)
     private Perfil perfil;

@@ -71,8 +71,6 @@ public class JWTTokenAutenticacaoService  {
             e.printStackTrace();
         }catch (Exception e){
             e.printStackTrace();
-        }finally {
-            System.out.printf("erro");
         }
 
         liberarcaoCors(response);
