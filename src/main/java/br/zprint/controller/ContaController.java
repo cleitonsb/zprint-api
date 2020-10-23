@@ -1,6 +1,7 @@
 package br.zprint.controller;
 
 import br.zprint.model.Conta;
+import br.zprint.model.Venda;
 import br.zprint.repository.ContaRepository;
 import br.zprint.repository.ContaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,7 +47,14 @@ public class ContaController {
 
     @GetMapping(value = {"", "/busca/{param}"}, produces = "application/json")
     public ResponseEntity<List<Conta>> listByAll(@PathVariable(value = "param", required = false) String param) {
-        List<Conta> list = (List<Conta>) repository.findByParam(param);
+        List<Conta> list;
+
+        if (param.equals("noCaixa")) {
+            list = (List<Conta>) repository.findOpen();
+        }else{
+            list = (List<Conta>) repository.findByParam(param);
+        }
+
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 

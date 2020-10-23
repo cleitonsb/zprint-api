@@ -67,6 +67,16 @@ public class WebConfigSecurity extends WebSecurityConfigurerAdapter {
             .antMatchers(HttpMethod.PUT, "/compra/**").hasAuthority("compra_put")
             .antMatchers(HttpMethod.DELETE, "/compra/**").hasAuthority("compra_delete")
 
+            .antMatchers(HttpMethod.GET, "/pessoa/**").hasAuthority("pessoa_get")
+            .antMatchers(HttpMethod.POST, "/pessoa/**").hasAuthority("pessoa_post")
+            .antMatchers(HttpMethod.PUT, "/pessoa/**").hasAuthority("pessoa_put")
+            .antMatchers(HttpMethod.DELETE, "/pessoa/**").hasAuthority("pessoa_delete")
+
+            .antMatchers(HttpMethod.GET, "/servico/**").hasAuthority("servico_get")
+            .antMatchers(HttpMethod.POST, "/servico/**").hasAuthority("servico_post")
+            .antMatchers(HttpMethod.PUT, "/servico/**").hasAuthority("servico_put")
+            .antMatchers(HttpMethod.DELETE, "/servico/**").hasAuthority("servico_delete")
+
             .antMatchers( "/estado/**").permitAll()
             .antMatchers( "/cidade/**").permitAll()
             .antMatchers( "/planoconta/**").permitAll()

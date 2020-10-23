@@ -1,6 +1,5 @@
 package br.zprint.model;
 
-import br.zprint.dto.UsuarioDTO;
 import br.zprint.dto.UsuarioOpDTO;
 
 import javax.persistence.*;
@@ -11,15 +10,13 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
-@Table(name = "vendas")
-public class Venda implements Serializable {
+@Table(name = "servico")
+public class Servico implements Serializable {
     private static final Long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private String nome;
-
     private Timestamp data;
 
     @Column(columnDefinition = "Decimal(10,2) default '0'")
@@ -35,26 +32,39 @@ public class Venda implements Serializable {
     @JoinColumn(name = "usuario_id", nullable = false)
     private Usuario usuario;
 
-    @OneToMany(mappedBy = "venda", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<VendaItem> itensVenda;
+    @ManyToOne
+    @JoinColumn(name = "responsavel_id", nullable = true)
+    private Usuario responsavel;
+
+    @ManyToOne
+    @JoinColumn(name = "pessoa_id", nullable = false)
+    private Pessoa pessoa;
+
+    @OneToMany(mappedBy = "servico", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<ServicoItem> itensServico;
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinTable(joinColumns = { @JoinColumn(name = "venda_id") }, inverseJoinColumns = { @JoinColumn(name = "conta_id") })
+    @JoinTable(joinColumns = { @JoinColumn(name = "servico_id") }, inverseJoinColumns = { @JoinColumn(name = "conta_id") })
     private List<Conta> contas = new ArrayList<>();
 
-    public Venda() {
+    @ManyToOne
+    @JoinColumn(name = "equipamento_id", nullable = true)
+    private Equipamento equipamento;
+
+    public Servico() {
     }
 
-    public Venda(Long id, String nome, Timestamp data, Double total, Double desconto, Boolean situacao, Usuario usuario, List<VendaItem> itensVenda, List<Conta> contas) {
+    public Servico(Long id, Timestamp data, Double total, Double desconto, Boolean situacao, Usuario usuario, Pessoa pessoa, List<ServicoItem> itensServico, List<Conta> contas, Equipamento equipamento) {
         this.id = id;
-        this.nome = nome;
         this.data = data;
         this.total = total;
         this.desconto = desconto;
         this.situacao = situacao;
         this.usuario = usuario;
-        this.itensVenda = itensVenda;
+        this.pessoa = pessoa;
+        this.itensServico = itensServico;
         this.contas = contas;
+        this.equipamento = equipamento;
     }
 
     public Long getId() {
@@ -63,14 +73,6 @@ public class Venda implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
     }
 
     public Timestamp getData() {
@@ -114,12 +116,20 @@ public class Venda implements Serializable {
         this.usuario = usuario;
     }
 
-    public List<VendaItem> getItensVenda() {
-        return itensVenda;
+    public Pessoa getPessoa() {
+        return pessoa;
     }
 
-    public void setItensVenda(List<VendaItem> itensVenda) {
-        this.itensVenda = itensVenda;
+    public void setPessoa(Pessoa pessoa) {
+        this.pessoa = pessoa;
+    }
+
+    public List<ServicoItem> getItensServico() {
+        return itensServico;
+    }
+
+    public void setItensServico(List<ServicoItem> itensServico) {
+        this.itensServico = itensServico;
     }
 
     public List<Conta> getContas() {
@@ -130,37 +140,47 @@ public class Venda implements Serializable {
         this.contas = contas;
     }
 
+    public Equipamento getEquipamento() {
+        return equipamento;
+    }
+
+    public void setEquipamento(Equipamento equipamento) {
+        this.equipamento = equipamento;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Venda venda = (Venda) o;
-        return Objects.equals(id, venda.id) &&
-                Objects.equals(nome, venda.nome) &&
-                Objects.equals(data, venda.data) &&
-                Objects.equals(total, venda.total) &&
-                Objects.equals(desconto, venda.desconto) &&
-                Objects.equals(situacao, venda.situacao) &&
-                Objects.equals(usuario, venda.usuario) &&
-                Objects.equals(itensVenda, venda.itensVenda);
+        Servico servico = (Servico) o;
+        return Objects.equals(id, servico.id) &&
+                Objects.equals(data, servico.data) &&
+                Objects.equals(total, servico.total) &&
+                Objects.equals(desconto, servico.desconto) &&
+                Objects.equals(situacao, servico.situacao) &&
+                Objects.equals(usuario, servico.usuario) &&
+                Objects.equals(pessoa, servico.pessoa) &&
+                Objects.equals(itensServico, servico.itensServico) &&
+                Objects.equals(contas, servico.contas);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, nome, data, total, desconto, situacao, usuario, itensVenda);
+        return Objects.hash(id, data, total, desconto, situacao, usuario, pessoa, itensServico, contas);
     }
 
     @Override
     public String toString() {
-        return "Venda{" +
+        return "Servico{" +
                 "id=" + id +
-                ", nome='" + nome + '\'' +
                 ", data=" + data +
                 ", total=" + total +
                 ", desconto=" + desconto +
                 ", situacao=" + situacao +
                 ", usuario=" + usuario +
-                ", itensVenda=" + itensVenda +
+                ", pessoa=" + pessoa +
+                ", itensServico=" + itensServico +
+                ", contas=" + contas +
                 '}';
     }
 }

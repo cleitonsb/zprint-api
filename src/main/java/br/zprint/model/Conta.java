@@ -5,6 +5,7 @@ import br.zprint.enums.TipoConta;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.List;
 
 @Entity
 @Table(name = "contas")
@@ -15,7 +16,10 @@ public class Conta implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private Timestamp data;
+    @Column(columnDefinition = "Timestamp default CURRENT_TIMESTAMP")
+    private Timestamp data = new Timestamp(System.currentTimeMillis());
+
+    @Column(columnDefinition = "Timestamp default CURRENT_TIMESTAMP")
     private Timestamp dataVencimento;
     private Timestamp dataPagamento;
 
@@ -26,10 +30,6 @@ public class Conta implements Serializable {
     @JoinColumn(name = "usuario_id", referencedColumnName = "id", nullable = false)
     private Usuario usuario;
 
-    @ManyToOne
-    @JoinColumn(name = "compra_id", referencedColumnName = "id", nullable = true)
-    private Compra compra;
-
     @Enumerated(EnumType.STRING)
     private TipoConta tipoConta;
 
@@ -39,22 +39,33 @@ public class Conta implements Serializable {
 
     private String descricao;
 
+    @ManyToOne
+    @JoinColumn(name = "caixa_id", nullable = true)
+    private Caixa caixa;
+
+    @OneToMany(mappedBy = "conta", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Pagamento> pagamentos;
+
     @Column(columnDefinition = "boolean default true")
     private Boolean situacao = true;
 
+    @Column(columnDefinition = "Decimal(10,2) default '0'")
+    private Double troco;
+
     public Conta(){}
 
-    public Conta(Long id, Timestamp data, Timestamp dataVencimento, Timestamp dataPagamento, Double valor, Usuario usuario, Compra compra, TipoConta tipoConta, PlanoConta planoConta, String descricao, Boolean situacao) {
+    public Conta(Long id, Timestamp data, Timestamp dataVencimento, Timestamp dataPagamento, Double valor, Usuario usuario, TipoConta tipoConta, PlanoConta planoConta, String descricao, Caixa caixa, List<Pagamento> pagamentos, Boolean situacao) {
         this.id = id;
         this.data = data;
         this.dataVencimento = dataVencimento;
         this.dataPagamento = dataPagamento;
         this.valor = valor;
         this.usuario = usuario;
-        this.compra = compra;
         this.tipoConta = tipoConta;
         this.planoConta = planoConta;
         this.descricao = descricao;
+        this.caixa = caixa;
+        this.pagamentos = pagamentos;
         this.situacao = situacao;
     }
 
@@ -106,14 +117,6 @@ public class Conta implements Serializable {
         this.usuario = usuario;
     }
 
-    public Compra getCompra() {
-        return compra;
-    }
-
-    public void setCompra(Compra compra) {
-        this.compra = compra;
-    }
-
     public TipoConta getTipoConta() {
         return tipoConta;
     }
@@ -144,5 +147,21 @@ public class Conta implements Serializable {
 
     public void setDescricao(String descricao) {
         this.descricao = descricao;
+    }
+
+    public Caixa getCaixa() {
+        return caixa;
+    }
+
+    public void setCaixa(Caixa caixa) {
+        this.caixa = caixa;
+    }
+
+    public List<Pagamento> getPagamentos() {
+        return pagamentos;
+    }
+
+    public void setPagamentos(List<Pagamento> pagamentos) {
+        this.pagamentos = pagamentos;
     }
 }

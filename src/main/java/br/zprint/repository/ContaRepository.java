@@ -20,4 +20,10 @@ public interface ContaRepository extends CrudRepository<Conta, Long> {
 
     @Query("select c from Conta c where c.situacao = true order by c.id desc")
     Page<Conta> findAll(Pageable page);
+
+    @Query("select c from Conta c where c.caixa is null and c.situacao = true")
+    Iterable<Conta> findOpen();
+
+    @Query("select c from Conta c where c.caixa.id = ?1 and c.situacao = true")
+    Iterable<Conta> findByCaixa(Long idCaixa);
 }

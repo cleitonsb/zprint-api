@@ -27,11 +27,10 @@ public class Perfil implements Serializable {
     public Perfil() {
     }
 
-    public Perfil(Long id, String nome, List<Permissao> permissoes, List<Usuario> usuarios) {
+    public Perfil(Long id, String nome, List<Permissao> permissoes) {
         this.id = id;
         this.nome = nome;
         this.permissoes = permissoes;
-        this.usuarios = usuarios;
     }
 
     public Long getId() {

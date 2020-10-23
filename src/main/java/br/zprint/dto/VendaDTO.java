@@ -21,10 +21,8 @@ public class VendaDTO implements Serializable {
     private Double total;
     private Double desconto;
     private Boolean situacao;
-    private Usuario usuario;
+    private UsuarioOpDTO usuario;
     private List<VendaItem> itensVenda;
-    private List<Pagamento> pagamentos;
-    private Double troco;
 
     public VendaDTO(Venda venda) {
         this.id = venda.getId();
@@ -34,8 +32,6 @@ public class VendaDTO implements Serializable {
         this.situacao = venda.getSituacao();
         this.usuario = venda.getUsuario();
         this.itensVenda = venda.getItensVenda();
-        this.pagamentos = venda.getPagamentos();
-        this.troco = venda.getTroco();
 
         Timestamp ts = venda.getData();
         Date data = new Date();
@@ -91,11 +87,11 @@ public class VendaDTO implements Serializable {
         this.situacao = situacao;
     }
 
-    public Usuario getUsuario() {
+    public UsuarioOpDTO getUsuario() {
         return usuario;
     }
 
-    public void setUsuario(Usuario usuario) {
+    public void setUsuario(UsuarioOpDTO usuario) {
         this.usuario = usuario;
     }
 
@@ -107,19 +103,4 @@ public class VendaDTO implements Serializable {
         this.itensVenda = itensVenda;
     }
 
-    public List<Pagamento> getPagamentos() {
-        return pagamentos;
-    }
-
-    public void setPagamentos(List<Pagamento> pagamentos) {
-        this.pagamentos = pagamentos;
-    }
-
-    public Double getTroco() {
-        return troco;
-    }
-
-    public void setTroco(Double troco) {
-        this.troco = troco;
-    }
 }

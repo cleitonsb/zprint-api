@@ -61,15 +61,26 @@ public class PerfilTest {
 //        permissoes.add(new Permissao("Pagamento", "/pagamento", "PUT", "pagamento_put"));
 //        permissoes.add(new Permissao("Pagamento", "/pagamento", "DELETE", "pagamento_delete"));
 
-        permissoes.add(new Permissao("Conta", "/conta", "GET", "conta_get"));
-        permissoes.add(new Permissao("Conta", "/conta", "POST", "conta_post"));
-        permissoes.add(new Permissao("Conta", "/conta", "PUT", "conta_put"));
-        permissoes.add(new Permissao("Conta", "/conta", "DELETE", "conta_delete"));
+//        permissoes.add(new Permissao("Conta", "/conta", "GET", "conta_get"));
+//        permissoes.add(new Permissao("Conta", "/conta", "POST", "conta_post"));
+//        permissoes.add(new Permissao("Conta", "/conta", "PUT", "conta_put"));
+//        permissoes.add(new Permissao("Conta", "/conta", "DELETE", "conta_delete"));
+//
+//        permissoes.add(new Permissao("Compra", "/compra", "GET", "compra_get"));
+//        permissoes.add(new Permissao("Compra", "/compra", "POST", "compra_post"));
+//        permissoes.add(new Permissao("Compra", "/compra", "PUT", "compra_put"));
+//        permissoes.add(new Permissao("Compra", "/compra", "DELETE", "compra_delete"));
 
-        permissoes.add(new Permissao("Compra", "/compra", "GET", "compra_get"));
-        permissoes.add(new Permissao("Compra", "/compra", "POST", "compra_post"));
-        permissoes.add(new Permissao("Compra", "/compra", "PUT", "compra_put"));
-        permissoes.add(new Permissao("Compra", "/compra", "DELETE", "compra_delete"));
+        permissoes.add(new Permissao("Pessoa", "/pessoa", "GET", "pessoa_get"));
+        permissoes.add(new Permissao("Pessoa", "/pessoa", "POST", "pessoa_post"));
+        permissoes.add(new Permissao("Pessoa", "/pessoa", "PUT", "pessoa_put"));
+        permissoes.add(new Permissao("Pessoa", "/pessoa", "DELETE", "pessoa_delete"));
+
+        permissoes.add(new Permissao("Serviço", "/servico", "GET", "servico_get"));
+        permissoes.add(new Permissao("Serviço", "/servico", "POST", "servico_post"));
+        permissoes.add(new Permissao("Serviço", "/servico", "PUT", "servico_put"));
+        permissoes.add(new Permissao("Serviço", "/servico", "DELETE", "servico_delete"));
+
         //permissoes.add(new Permissao("", "", "", ""));
 
         return permissoes;

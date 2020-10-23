@@ -41,7 +41,7 @@ public class UsuarioTest {
         endereco.setLogradouro("SQN");
         endereco.setNumero("615");
         endereco.setCidade(cidade.get());
-        endereco.setUsuario(usuario);
+        //endereco.setUsuario(usuario);
 
         List<Endereco> enderecos = new ArrayList<>();
         enderecos.add(endereco);

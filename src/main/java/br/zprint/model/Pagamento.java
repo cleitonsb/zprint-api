@@ -19,12 +19,13 @@ public class Pagamento implements Serializable {
     @Enumerated(EnumType.STRING)
     private TipoPagamento tipoPagamento;
 
+    private Number parcelas;
     private Double valor;
 
     @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "venda_id", nullable = true)
-    private Venda venda;
+    @JoinColumn(name = "conta_id", nullable = true)
+    private Conta conta;
 
     @Column(columnDefinition = "boolean default true")
     private Boolean situacao = true;
@@ -32,11 +33,12 @@ public class Pagamento implements Serializable {
     public Pagamento() {
     }
 
-    public Pagamento(Long id, TipoPagamento tipoPagamento, Double valor, Venda venda, Boolean situacao) {
+    public Pagamento(Long id, TipoPagamento tipoPagamento, Number parcelas, Double valor, Conta conta, Boolean situacao) {
         this.id = id;
         this.tipoPagamento = tipoPagamento;
+        this.parcelas = parcelas;
         this.valor = valor;
-        this.venda = venda;
+        this.conta = conta;
         this.situacao = situacao;
     }
 
@@ -72,12 +74,20 @@ public class Pagamento implements Serializable {
         this.situacao = situacao;
     }
 
-    public Venda getVenda() {
-        return venda;
+    public Number getParcelas() {
+        return parcelas;
     }
 
-    public void setVenda(Venda venda) {
-        this.venda = venda;
+    public void setParcelas(Number parcelas) {
+        this.parcelas = parcelas;
+    }
+
+    public Conta getConta() {
+        return conta;
+    }
+
+    public void setConta(Conta conta) {
+        this.conta = conta;
     }
 
     @Override
@@ -87,14 +97,15 @@ public class Pagamento implements Serializable {
         Pagamento pagamento = (Pagamento) o;
         return Objects.equals(id, pagamento.id) &&
                 tipoPagamento == pagamento.tipoPagamento &&
+                Objects.equals(parcelas, pagamento.parcelas) &&
                 Objects.equals(valor, pagamento.valor) &&
-                Objects.equals(venda, pagamento.venda) &&
+                Objects.equals(conta, pagamento.conta) &&
                 Objects.equals(situacao, pagamento.situacao);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, tipoPagamento, valor, venda, situacao);
+        return Objects.hash(id, tipoPagamento, parcelas, valor, conta, situacao);
     }
 
     @Override
@@ -102,8 +113,9 @@ public class Pagamento implements Serializable {
         return "Pagamento{" +
                 "id=" + id +
                 ", tipoPagamento=" + tipoPagamento +
+                ", parcelas=" + parcelas +
                 ", valor=" + valor +
-                ", venda=" + venda +
+                ", conta=" + conta +
                 ", situacao=" + situacao +
                 '}';
     }

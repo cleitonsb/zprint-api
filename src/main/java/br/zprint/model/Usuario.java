@@ -24,9 +24,9 @@ public class Usuario implements UserDetails {
     private String celular;
     private String telefone;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<Endereco> enderecos;
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(joinColumns = { @JoinColumn(name = "usuario_id") }, inverseJoinColumns = { @JoinColumn(name = "endereco_id") })
+    private List<Endereco> enderecos = new ArrayList<>();
 
     @JsonIgnore
     @ManyToOne

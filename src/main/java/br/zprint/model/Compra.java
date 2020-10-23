@@ -3,6 +3,7 @@ package br.zprint.model;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -20,6 +21,9 @@ public class Compra implements Serializable {
     @Column(columnDefinition = "Decimal(10,2) default '0'")
     private Double desconto;
 
+    @Column(columnDefinition = "Decimal(10,2) default '0'")
+    private Double total;
+
     @ManyToOne
     @JoinColumn(name = "usuario_id", nullable = false)
     private Usuario usuario;
@@ -34,9 +38,13 @@ public class Compra implements Serializable {
     @Column(columnDefinition = "boolean default true")
     private Boolean situacao = true;
 
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(joinColumns = { @JoinColumn(name = "compra_id") }, inverseJoinColumns = { @JoinColumn(name = "conta_id") })
+    private List<Conta> contas = new ArrayList<>();
+
     public Compra(){}
 
-    public Compra(Long id, Timestamp data, Double desconto, Usuario usuario, List<CompraItem> itensCompra, Pessoa pessoa, Boolean situacao) {
+    public Compra(Long id, Timestamp data, Double desconto, Usuario usuario, List<CompraItem> itensCompra, Pessoa pessoa, Boolean situacao, List<Conta> contas) {
         this.id = id;
         this.data = data;
         this.desconto = desconto;
@@ -44,6 +52,7 @@ public class Compra implements Serializable {
         this.itensCompra = itensCompra;
         this.pessoa = pessoa;
         this.situacao = situacao;
+        this.contas = contas;
     }
 
     public Long getId() {
@@ -100,6 +109,14 @@ public class Compra implements Serializable {
 
     public void setSituacao(Boolean situacao) {
         this.situacao = situacao;
+    }
+
+    public List<Conta> getContas() {
+        return contas;
+    }
+
+    public void setContas(List<Conta> contas) {
+        this.contas = contas;
     }
 
     @Override

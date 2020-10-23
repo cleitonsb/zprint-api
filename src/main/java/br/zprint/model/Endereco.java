@@ -1,7 +1,5 @@
 package br.zprint.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
@@ -20,11 +18,6 @@ public class Endereco implements Serializable {
     private String logradouro;
     private String bairro;
     private String numero;
-
-    @JsonIgnore
-    @ManyToOne
-    @JoinColumn(name = "usuario_id", nullable = false)
-    private Usuario usuario;
 
     @ManyToOne
     @JoinColumn(name = "cidade_id", nullable = false)
@@ -78,14 +71,6 @@ public class Endereco implements Serializable {
         this.numero = numero;
     }
 
-    public Usuario getUsuario() {
-        return usuario;
-    }
-
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
-    }
-
     public Cidade getCidade() {
         return cidade;
     }
@@ -105,13 +90,12 @@ public class Endereco implements Serializable {
                 Objects.equals(logradouro, endereco.logradouro) &&
                 Objects.equals(bairro, endereco.bairro) &&
                 Objects.equals(numero, endereco.numero) &&
-                Objects.equals(usuario, endereco.usuario) &&
                 Objects.equals(cidade, endereco.cidade);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, apelido, cep, logradouro, bairro, numero, usuario, cidade);
+        return Objects.hash(id, apelido, cep, logradouro, bairro, numero, cidade);
     }
 
     @Override
@@ -123,7 +107,6 @@ public class Endereco implements Serializable {
                 ", logradouro='" + logradouro + '\'' +
                 ", bairro='" + bairro + '\'' +
                 ", numero='" + numero + '\'' +
-                ", usuario=" + usuario +
                 ", cidade=" + cidade +
                 '}';
     }
