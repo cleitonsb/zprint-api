@@ -8,6 +8,8 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Repository
 @Transactional
 public interface ContaRepository extends CrudRepository<Conta, Long> {
@@ -21,8 +23,12 @@ public interface ContaRepository extends CrudRepository<Conta, Long> {
     @Query("select c from Conta c where c.situacao = true order by c.id desc")
     Page<Conta> findAll(Pageable page);
 
-    @Query("select c from Conta c where c.caixa is null and c.situacao = true")
-    Iterable<Conta> findOpen();
+    @Query(value = "select vc.venda_id, v.nome, c.valor, c.troco\n" +
+            "from contas c\n" +
+            "         inner join vendas_contas vc on c.id = vc.conta_id\n" +
+            "         inner join vendas v on vc.venda_id = v.id\n" +
+            "where c.caixa_id is null and c.situacao = true", nativeQuery = true)
+    List findOpen();
 
     @Query("select c from Conta c where c.caixa.id = ?1 and c.situacao = true")
     Iterable<Conta> findByCaixa(Long idCaixa);

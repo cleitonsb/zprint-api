@@ -9,6 +9,13 @@ import java.util.List;
 
 @Entity
 @Table(name = "contas")
+
+//@NamedQuery(name = "Conta.findOpen", query = "select vc.venda_id, v.nome\n" +
+//        "from contas c\n" +
+//        "   inner join vendas_contas vc on c.id = vc.conta_id\n" +
+//        "   inner join vendas v on vc.venda_id = v.id\n" +
+//        "where c.caixa_id is null and c.situacao = true")
+
 public class Conta implements Serializable {
     private static final Long serialVersionUID = 1L;
 
@@ -54,7 +61,7 @@ public class Conta implements Serializable {
 
     public Conta(){}
 
-    public Conta(Long id, Timestamp data, Timestamp dataVencimento, Timestamp dataPagamento, Double valor, Usuario usuario, TipoConta tipoConta, PlanoConta planoConta, String descricao, Caixa caixa, List<Pagamento> pagamentos, Boolean situacao) {
+    public Conta(Long id, Timestamp data, Timestamp dataVencimento, Timestamp dataPagamento, Double valor, Usuario usuario, TipoConta tipoConta, PlanoConta planoConta, String descricao, Caixa caixa, List<Pagamento> pagamentos, Boolean situacao, Double troco) {
         this.id = id;
         this.data = data;
         this.dataVencimento = dataVencimento;
@@ -67,6 +74,7 @@ public class Conta implements Serializable {
         this.caixa = caixa;
         this.pagamentos = pagamentos;
         this.situacao = situacao;
+        this.troco = troco;
     }
 
     public Long getId() {
@@ -163,5 +171,13 @@ public class Conta implements Serializable {
 
     public void setPagamentos(List<Pagamento> pagamentos) {
         this.pagamentos = pagamentos;
+    }
+
+    public Double getTroco() {
+        return troco;
+    }
+
+    public void setTroco(Double troco) {
+        this.troco = troco;
     }
 }

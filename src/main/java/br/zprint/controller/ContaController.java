@@ -47,10 +47,10 @@ public class ContaController {
 
     @GetMapping(value = {"", "/busca/{param}"}, produces = "application/json")
     public ResponseEntity<List<Conta>> listByAll(@PathVariable(value = "param", required = false) String param) {
-        List<Conta> list;
+        List list;
 
         if (param.equals("noCaixa")) {
-            list = (List<Conta>) repository.findOpen();
+           list = repository.findOpen();
         }else{
             list = (List<Conta>) repository.findByParam(param);
         }
@@ -59,16 +59,13 @@ public class ContaController {
     }
 
     @PostMapping(value = "", produces = "application/json")
-    public ResponseEntity<Conta> store(@RequestBody Conta Conta) {
-        Conta ContaStorade = repository.save(Conta);
+    public ResponseEntity<Conta> store(@RequestBody Conta conta) {
+
+        for (int i = 0; i < conta.getPagamentos().size(); i++) {
+            conta.getPagamentos().get(i).setConta(conta);
+        }
+
+        Conta ContaStorade = repository.save(conta);
         return new ResponseEntity<>(ContaStorade, HttpStatus.OK);
     }
-
-    @PutMapping(value = "", produces = "application/json")
-    public ResponseEntity<Conta> update(@RequestBody Conta Conta) {
-        Conta ContaStored = repository.save(Conta);
-        return new ResponseEntity<Conta>(ContaStored, HttpStatus.OK);
-    }
-
-
 }
