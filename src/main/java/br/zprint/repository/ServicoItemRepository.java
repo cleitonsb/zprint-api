@@ -9,9 +9,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 @Transactional
-public interface VendaItemRepository extends CrudRepository<Pagamento, Long> {
+public interface ServicoItemRepository extends CrudRepository<Pagamento, Long> {
 
     @Modifying
-    @Query("update VendaItem v set v.situacao = false where v.venda.id = ?1")
-    void deletByVenda(Long idVenda);
+    @Query("update ServicoItem s set s.situacao = false where s.servico.id = ?1")
+    void deletByServico(Long idServico);
 }

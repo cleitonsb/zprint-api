@@ -57,6 +57,30 @@ public class WebConfigSecurity extends WebSecurityConfigurerAdapter {
             .antMatchers(HttpMethod.PUT, "/pagamento/**").hasAuthority("pagamento_put")
             .antMatchers(HttpMethod.DELETE, "/pagamento/**").hasAuthority("pagamento_delete")
 
+            .antMatchers(HttpMethod.GET, "/conta/**").hasAuthority("conta_get")
+            .antMatchers(HttpMethod.POST, "/conta/**").hasAuthority("conta_post")
+            .antMatchers(HttpMethod.PUT, "/conta/**").hasAuthority("conta_put")
+            .antMatchers(HttpMethod.DELETE, "/conta/**").hasAuthority("conta_delete")
+
+            .antMatchers(HttpMethod.GET, "/compra/**").hasAuthority("compra_get")
+            .antMatchers(HttpMethod.POST, "/compra/**").hasAuthority("compra_post")
+            .antMatchers(HttpMethod.PUT, "/compra/**").hasAuthority("compra_put")
+            .antMatchers(HttpMethod.DELETE, "/compra/**").hasAuthority("compra_delete")
+
+            .antMatchers(HttpMethod.GET, "/pessoa/**").hasAuthority("pessoa_get")
+            .antMatchers(HttpMethod.POST, "/pessoa/**").hasAuthority("pessoa_post")
+            .antMatchers(HttpMethod.PUT, "/pessoa/**").hasAuthority("pessoa_put")
+            .antMatchers(HttpMethod.DELETE, "/pessoa/**").hasAuthority("pessoa_delete")
+
+            .antMatchers(HttpMethod.GET, "/servico/**").hasAuthority("servico_get")
+            .antMatchers(HttpMethod.POST, "/servico/**").hasAuthority("servico_post")
+            .antMatchers(HttpMethod.PUT, "/servico/**").hasAuthority("servico_put")
+            .antMatchers(HttpMethod.DELETE, "/servico/**").hasAuthority("servico_delete")
+
+            .antMatchers( "/estado/**").permitAll()
+            .antMatchers( "/cidade/**").permitAll()
+            .antMatchers( "/planoconta/**").permitAll()
+
             .antMatchers("/**").denyAll()
 
             .anyRequest().authenticated().and().logout().logoutSuccessUrl("/index")

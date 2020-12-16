@@ -1,14 +1,9 @@
 package br.zprint.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import javax.persistence.*;
 import java.io.Serializable;
-import java.sql.Time;
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -38,14 +33,10 @@ public class Caixa implements Serializable {
     @JoinColumn(name = "usuario_id", referencedColumnName = "id", nullable = false)
     private Usuario usuario;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "caixa", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<Venda> vendas;
-
     public Caixa() {
     }
 
-    public Caixa(Long id, Timestamp dataAbertura, Timestamp dataFechamento, Double fundo, Double quebra, Boolean situacao, Usuario usuario, List<Venda> vendas) {
+    public Caixa(Long id, Timestamp dataAbertura, Timestamp dataFechamento, Double fundo, Double quebra, Boolean situacao, Usuario usuario) {
         this.id = id;
         this.dataAbertura = dataAbertura;
         this.dataFechamento = dataFechamento;
@@ -53,7 +44,6 @@ public class Caixa implements Serializable {
         this.quebra = quebra;
         this.situacao = situacao;
         this.usuario = usuario;
-        this.vendas = vendas;
     }
 
     public Long getId() {
@@ -112,13 +102,6 @@ public class Caixa implements Serializable {
         this.usuario = usuario;
     }
 
-    public List<Venda> getVendas() {
-        return vendas;
-    }
-
-    public void setVendas(List<Venda> vendas) {
-        this.vendas = vendas;
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -131,13 +114,12 @@ public class Caixa implements Serializable {
                 Objects.equals(fundo, caixa.fundo) &&
                 Objects.equals(quebra, caixa.quebra) &&
                 Objects.equals(situacao, caixa.situacao) &&
-                Objects.equals(usuario, caixa.usuario) &&
-                Objects.equals(vendas, caixa.vendas);
+                Objects.equals(usuario, caixa.usuario) ;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, dataAbertura, dataFechamento, fundo, quebra, situacao, usuario, vendas);
+        return Objects.hash(id, dataAbertura, dataFechamento, fundo, quebra, situacao, usuario);
     }
 
     @Override
@@ -150,7 +132,6 @@ public class Caixa implements Serializable {
                 ", quebra=" + quebra +
                 ", situacao=" + situacao +
                 ", usuario=" + usuario +
-                ", vendas=" + vendas +
                 '}';
     }
 }

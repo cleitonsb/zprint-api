@@ -23,9 +23,6 @@ public interface VendaRepository extends JpaRepository<Venda, Long> {
     @Query("select v from Venda v where v.situacao = true order by v.id desc")
     Page<Venda> findAll(Pageable page);
 
-    @Query("select v from Venda v where v.caixa is null and v.situacao = true")
-    Iterable<Venda> findOpen();
 
-    @Query("select v from Venda v where v.caixa.id = ?1 and v.situacao = true")
-    Iterable<Venda> findByCaixa(Long idCaixa);
+
 }

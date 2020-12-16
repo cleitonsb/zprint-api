@@ -1,7 +1,6 @@
 package br.zprint.controller;
 
 import br.zprint.dto.UsuarioDTO;
-import br.zprint.model.Perfil;
 import br.zprint.model.Usuario;
 import br.zprint.repository.PerfilRepository;
 import br.zprint.repository.UsuarioRepository;
@@ -62,8 +61,10 @@ public class UsuarioController {
 
     @GetMapping(value = {"", "/busca/{param}"}, produces = "application/json")
     public ResponseEntity<List<Usuario>> listByAll(@PathVariable(value = "param", required = false) String param) {
+        param = (param != null) ? param.toUpperCase() : "";
+
         List<Usuario> list = (List<Usuario>) repository.findByParam(param);
-        return new ResponseEntity<List<Usuario>>(list, HttpStatus.OK);
+        return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
     @PostMapping(value = "/upload")
@@ -83,18 +84,18 @@ public class UsuarioController {
     @PostMapping(value = "", produces = "application/json")
     public ResponseEntity<Usuario> store(@RequestBody Usuario usuario) {
 
-        if(usuario.getPerfil() == null) {
-            Optional<Perfil> perfil = perfilRepository.findById(10L);
-            usuario.setPerfil(perfil.get());
-        }
+//        if(usuario.getPerfil() == null) {
+//            Optional<Perfil> perfil = perfilRepository.findById(10L);
+//            usuario.setPerfil(perfil.get());
+//        }
 
-        for (int i = 0; i < usuario.getEnderecos().size(); i++) {
-            if(usuario.getEnderecos().get(i).getCep() == null) {
-                usuario.getEnderecos().remove(usuario.getEnderecos().get(i));
-            }else{
-                usuario.getEnderecos().get(i).setUsuario(usuario);
-            }
-        }
+//        for (int i = 0; i < usuario.getEnderecos().size(); i++) {
+//            if(usuario.getEnderecos().get(i).getCep() == null) {
+//                usuario.getEnderecos().remove(usuario.getEnderecos().get(i));
+//            }else{
+//                usuario.getEnderecos().get(i).setUsuario(usuario);
+//            }
+//        }
 
         Usuario usuarioStored = repository.save(usuario);
         return new ResponseEntity<Usuario>(usuarioStored, HttpStatus.OK);

@@ -15,8 +15,8 @@ public interface PagamentoRepository extends CrudRepository<Pagamento, Long> {
     Iterable<Pagamento> findByVenda(Number idVenda);
 
     @Query("select p.tipoPagamento, sum(p.valor) as total from Pagamento p " +
-            "inner join Venda v on v = p.venda " +
-            "where v.caixa.id = ?1 and p.situacao = true and v.situacao = true " +
+            "inner join Conta cp on cp = p.conta " +
+            "where cp.caixa.id = ?1 and p.situacao = true and cp.situacao = true " +
             "group by p.tipoPagamento")
     List findByCaixa(Long idCaixa);
 

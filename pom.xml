@@ -11,9 +11,9 @@
     <groupId>br.zprint</groupId>
     <artifactId>br-zprint</artifactId>
     <version>0.0.1</version>
-    <packaging>war</packaging>
+    <packaging>jar</packaging>
     <name>br-zprint</name>
-    <description>Frente de gráfica</description>
+    <description>Frente de caixa</description>
 
     <properties>
         <java.version>8</java.version>
@@ -86,6 +86,13 @@
             <artifactId>tika-core</artifactId>
             <version>1.24.1</version>
         </dependency>
+
+        <dependency>
+            <groupId>commons-lang</groupId>
+            <artifactId>commons-lang</artifactId>
+            <version>2.6</version>
+        </dependency>
+
 
     </dependencies>
 

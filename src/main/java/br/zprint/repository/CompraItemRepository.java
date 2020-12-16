@@ -1,6 +1,9 @@
 package br.zprint.repository;
 
-import br.zprint.model.Pagamento;
+import br.zprint.model.CompraItem;
+import br.zprint.model.Conta;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -9,9 +12,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 @Transactional
-public interface VendaItemRepository extends CrudRepository<Pagamento, Long> {
-
+public interface CompraItemRepository extends CrudRepository<CompraItem, Long> {
     @Modifying
-    @Query("update VendaItem v set v.situacao = false where v.venda.id = ?1")
-    void deletByVenda(Long idVenda);
+    @Query("delete from CompraItem c where c.compra.id = ?1")
+    void deletByCompra(Long idCompra);
 }
