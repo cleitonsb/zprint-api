@@ -52,7 +52,7 @@ public class UploadImageService {
 
                 ImageIO.write(bImageOut, "JPG", new File(targetLocation.toString()));
 
-                return env.getProperty("server.endereco" + "/avatar/" + usuario.getId() + ".jpg");
+                return env.getProperty("server.endereco") + "/usuario/avatar/" + usuario.getId() + ".jpg";
             }
 
         }catch (IOException ex){

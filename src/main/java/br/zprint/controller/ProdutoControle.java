@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.lang.reflect.Array;
 import java.util.List;
 import java.util.Optional;
 
@@ -53,11 +54,25 @@ public class ProdutoControle {
         return new ResponseEntity<Page<Produto>>(list, HttpStatus.OK);
     }
 
-    @GetMapping(value = {"", "/busca/{param}"}, produces = "application/json")
-    public ResponseEntity<List<Produto>> listAll(@PathVariable(value = "param", required = false) String param) {
+    @GetMapping(value = {"", "/busca/{param}/tipo/{tipo}"}, produces = "application/json")
+    public ResponseEntity<List<Produto>> listAll(@PathVariable(value = "param", required = false) String param,
+                                                 @PathVariable(value = "tipo", required = false) String tipo) {
         param = (param != null) ? param.toUpperCase() : "";
+        List<Produto> list;
 
-        List<Produto> list = (List<Produto>) repository.findByParam(param);
+        if(tipo != null && !tipo.trim().isEmpty() && tipo.equals("servico")) {
+            list = (List<Produto>) repository.findProdServiceByParam(param);
+        }else {
+            list = (List<Produto>) repository.findByParam(param);
+        }
+        return new ResponseEntity<List<Produto>>(list, HttpStatus.OK);
+    }
+
+    @GetMapping(value = {"/servico", "/servico/busca/{param}"}, produces = "application/json")
+    public ResponseEntity<List<Produto>> listAllProductService(@PathVariable(value = "param", required = false) String param) {
+        param = (param != null) ? param.toUpperCase() : "";
+        List<Produto> list = (List<Produto>) repository.findProdServiceByParam(param);
+
         return new ResponseEntity<List<Produto>>(list, HttpStatus.OK);
     }
 

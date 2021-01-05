@@ -1,5 +1,7 @@
 package br.zprint.model;
 
+import net.minidev.json.annotate.JsonIgnore;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -17,9 +19,10 @@ public class Perfil implements Serializable {
 
     private String nome;
 
+    @JsonIgnore
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(joinColumns = { @JoinColumn(name = "perfil_id") }, inverseJoinColumns = { @JoinColumn(name = "permissao_id") })
-    private List<Permissao> permissoes = new ArrayList<Permissao>();
+    private List<Permissao> permissoes = new ArrayList<>();
 
     @OneToMany(mappedBy = "perfil", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Usuario> usuarios;

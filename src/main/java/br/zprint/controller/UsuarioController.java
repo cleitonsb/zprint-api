@@ -1,6 +1,7 @@
 package br.zprint.controller;
 
 import br.zprint.dto.UsuarioDTO;
+import br.zprint.model.Perfil;
 import br.zprint.model.Usuario;
 import br.zprint.repository.PerfilRepository;
 import br.zprint.repository.UsuarioRepository;
@@ -34,13 +35,13 @@ public class UsuarioController {
     @GetMapping(value = "/{id}", produces = "application/json")
     public ResponseEntity init(@PathVariable(value = "id") Long id) {
         Optional<Usuario> usuario = repository.findById(id);
-        return new ResponseEntity<Usuario>(usuario.get(), HttpStatus.OK);
+        return new ResponseEntity<>(new UsuarioDTO(usuario.get()), HttpStatus.OK);
     }
 
     @GetMapping(value = "/{email}/email", produces = "application/json")
     public ResponseEntity userByEmail(@PathVariable(value = "email") String email) {
         Usuario usuario = repository.findByLogin(email);
-        return new ResponseEntity<UsuarioDTO>(new UsuarioDTO(usuario), HttpStatus.OK);
+        return new ResponseEntity<>(new UsuarioDTO(usuario), HttpStatus.OK);
     }
 
     @GetMapping(value = {"/page/{page}", "/page/{page}/busca/{param}"}, produces = "application/json")
@@ -83,20 +84,6 @@ public class UsuarioController {
 
     @PostMapping(value = "", produces = "application/json")
     public ResponseEntity<Usuario> store(@RequestBody Usuario usuario) {
-
-//        if(usuario.getPerfil() == null) {
-//            Optional<Perfil> perfil = perfilRepository.findById(10L);
-//            usuario.setPerfil(perfil.get());
-//        }
-
-//        for (int i = 0; i < usuario.getEnderecos().size(); i++) {
-//            if(usuario.getEnderecos().get(i).getCep() == null) {
-//                usuario.getEnderecos().remove(usuario.getEnderecos().get(i));
-//            }else{
-//                usuario.getEnderecos().get(i).setUsuario(usuario);
-//            }
-//        }
-
         Usuario usuarioStored = repository.save(usuario);
         return new ResponseEntity<Usuario>(usuarioStored, HttpStatus.OK);
     }
@@ -104,7 +91,7 @@ public class UsuarioController {
     @PutMapping(value = "", produces = "application/json")
     public ResponseEntity<Usuario> update(@RequestBody Usuario usuario) {
         Usuario usuarioStored = repository.save(usuario);
-        return new ResponseEntity<Usuario>(usuarioStored, HttpStatus.OK);
+        return new ResponseEntity<>(usuarioStored, HttpStatus.OK);
     }
 
     @GetMapping(value = "/avatar/{nomeArquivo}", produces = MediaType.IMAGE_JPEG_VALUE)

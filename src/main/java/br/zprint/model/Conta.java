@@ -10,12 +10,6 @@ import java.util.List;
 @Entity
 @Table(name = "contas")
 
-//@NamedQuery(name = "Conta.findOpen", query = "select vc.venda_id, v.nome\n" +
-//        "from contas c\n" +
-//        "   inner join vendas_contas vc on c.id = vc.conta_id\n" +
-//        "   inner join vendas v on vc.venda_id = v.id\n" +
-//        "where c.caixa_id is null and c.situacao = true")
-
 public class Conta implements Serializable {
     private static final Long serialVersionUID = 1L;
 

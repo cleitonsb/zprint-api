@@ -28,13 +28,12 @@ public class Usuario implements UserDetails {
     @JoinTable(joinColumns = { @JoinColumn(name = "usuario_id") }, inverseJoinColumns = { @JoinColumn(name = "endereco_id") })
     private List<Endereco> enderecos = new ArrayList<>();
 
-    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "perfil_id", nullable = false)
     private Perfil perfil;
 
     private String avatar;
-    private Boolean situacao;
+    private Boolean situacao = true;
 
     public Usuario() {}
 

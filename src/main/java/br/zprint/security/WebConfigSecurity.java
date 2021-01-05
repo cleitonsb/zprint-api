@@ -32,7 +32,7 @@ public class WebConfigSecurity extends WebSecurityConfigurerAdapter {
             .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 
             .antMatchers(HttpMethod.GET, "/usuario/avatar/**").permitAll()
-            .antMatchers(HttpMethod.GET, "/usuario/**").hasAuthority("usuario_get")
+            .antMatchers(HttpMethod.GET, "/usuario/**").permitAll()
             .antMatchers(HttpMethod.POST, "/usuario/**").hasAuthority("usuario_post")
             .antMatchers(HttpMethod.PUT, "/usuario/**").hasAuthority("usuario_put")
             .antMatchers(HttpMethod.DELETE, "/usuario/**").hasAuthority("usuario_delete")
@@ -77,6 +77,7 @@ public class WebConfigSecurity extends WebSecurityConfigurerAdapter {
             .antMatchers(HttpMethod.PUT, "/servico/**").hasAuthority("servico_put")
             .antMatchers(HttpMethod.DELETE, "/servico/**").hasAuthority("servico_delete")
 
+            .antMatchers( "/perfil/**").permitAll()
             .antMatchers( "/estado/**").permitAll()
             .antMatchers( "/cidade/**").permitAll()
             .antMatchers( "/planoconta/**").permitAll()

@@ -16,6 +16,9 @@ public interface ProdutoRepository extends CrudRepository<Produto, Long> {
     @Query("select p from Produto p where p.situacao = true and (UPPER(p.nome) like %?1% or p.ean like %?1%)")
     Iterable<Produto> findByParam(String param);
 
+    @Query("select p from Produto p where p.situacao = true and p.tipo = 1 and (UPPER(p.nome) like %?1% or p.ean like %?1%)")
+    Iterable<Produto> findProdServiceByParam(String param);
+
     @Query("select p from Produto p where p.situacao = true and (UPPER(p.nome) like %?1% or p.ean like %?1%)")
     Page<Produto> findByParam(String param, Pageable page);
 
