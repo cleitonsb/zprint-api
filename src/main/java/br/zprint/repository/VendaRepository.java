@@ -23,6 +23,8 @@ public interface VendaRepository extends JpaRepository<Venda, Long> {
     @Query("select v from Venda v where v.situacao = true order by v.id desc")
     Page<Venda> findAll(Pageable page);
 
-
+    @Modifying
+    @Query("update Venda v set v.situacao = false where v.id = ?1")
+    void softDelete(Long id);
 
 }

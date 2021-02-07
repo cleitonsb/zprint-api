@@ -13,10 +13,12 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @RestController
@@ -57,7 +59,7 @@ public class UsuarioController {
             list = repository.findAll(pageRequest);
         }
 
-        return new ResponseEntity<Page<Usuario>>(list, HttpStatus.OK);
+        return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
     @GetMapping(value = {"", "/busca/{param}"}, produces = "application/json")
@@ -84,8 +86,18 @@ public class UsuarioController {
 
     @PostMapping(value = "", produces = "application/json")
     public ResponseEntity<Usuario> store(@RequestBody Usuario usuario) {
+
+        if(Objects.isNull(usuario.getId())){
+            usuario.setSenha(new BCryptPasswordEncoder().encode("zp010203"));
+        }else{
+            Optional<Usuario> usuarioOpt = repository.findById(usuario.getId());
+            Usuario user = usuarioOpt.get();
+
+            usuario.setSenha(user.getSenha());
+        }
+
         Usuario usuarioStored = repository.save(usuario);
-        return new ResponseEntity<Usuario>(usuarioStored, HttpStatus.OK);
+        return new ResponseEntity<>(usuarioStored, HttpStatus.OK);
     }
 
     @PutMapping(value = "", produces = "application/json")
@@ -118,4 +130,16 @@ public class UsuarioController {
         }
     }
 
+    @PostMapping(value = "/senha", produces = "application/json")
+    public ResponseEntity<Usuario> updatePass(@RequestParam("id") Long id,
+                                              @RequestParam("senha") String senha) {
+
+        Optional<Usuario> usuarioOpt = repository.findById(id);
+        Usuario usuario = usuarioOpt.get();
+
+        usuario.setSenha(new BCryptPasswordEncoder().encode(senha));
+        repository.save(usuario);
+
+        return new ResponseEntity(HttpStatus.OK);
+    }
 }

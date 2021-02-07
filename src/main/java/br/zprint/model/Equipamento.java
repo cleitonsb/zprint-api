@@ -81,4 +81,29 @@ public class Equipamento implements Serializable {
     public void setPessoa(Pessoa pessoa) {
         this.pessoa = pessoa;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Equipamento that = (Equipamento) o;
+        return Objects.equals(id, that.id) && Objects.equals(nome, that.nome) && Objects.equals(marca, that.marca) && Objects.equals(modelo, that.modelo) && Objects.equals(serie, that.serie) && Objects.equals(pessoa, that.pessoa);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, nome, marca, modelo, serie, pessoa);
+    }
+
+    @Override
+    public String toString() {
+        return "Equipamento{" +
+                "id=" + id +
+                ", nome='" + nome + '\'' +
+                ", marca='" + marca + '\'' +
+                ", modelo='" + modelo + '\'' +
+                ", serie='" + serie + '\'' +
+                ", pessoa=" + pessoa +
+                '}';
+    }
 }

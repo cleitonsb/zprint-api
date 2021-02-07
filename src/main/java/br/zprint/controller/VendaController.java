@@ -1,6 +1,8 @@
 package br.zprint.controller;
 
+import br.zprint.model.Usuario;
 import br.zprint.model.Venda;
+import br.zprint.repository.UsuarioRepository;
 import br.zprint.repository.VendaItemRepository;
 import br.zprint.repository.VendaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,9 +11,11 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @RestController
@@ -23,6 +27,9 @@ public class VendaController {
 
     @Autowired
     VendaItemRepository itemRepository;
+
+    @Autowired
+    UsuarioRepository usuarioRepository;
 
     @GetMapping(value = "/{id}", produces = "application/json")
     public ResponseEntity init(@PathVariable(value = "id") Long id) {
@@ -52,13 +59,6 @@ public class VendaController {
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
-//    @GetMapping(value = {"", "/caixa/{idCaixa}"}, produces = "application/json")
-//    public ResponseEntity<List<Venda>> listByCaixa(@PathVariable(value = "idCaixa", required = false) Long idCaixa) {
-//        List<Venda> list = (List<Venda>) repository.findByCaixa(idCaixa);
-//
-//        return new ResponseEntity<>(list, HttpStatus.OK);
-//    }
-
     @PostMapping(value = "", produces = "application/json")
     public ResponseEntity<Venda> store(@RequestBody Venda venda) {
 
@@ -67,13 +67,29 @@ public class VendaController {
         for (int i = 0; i < venda.getItensVenda().size(); i++) {
             venda.getItensVenda().get(i).setVenda(venda);
         }
-//
-//        for (int i = 0; i < venda.getPagamentos().size(); i++) {
-//            venda.getPagamentos().get(i).setVenda(venda);
-//        }
 
         Venda vendaStorade = repository.save(venda);
         return new ResponseEntity<>(vendaStorade, HttpStatus.OK);
+    }
+
+    @PostMapping(value = "/remove", produces = "application/json")
+    public ResponseEntity remove(@RequestParam("id") Long id,
+                                 @RequestParam("usuario") String usuario,
+                                 @RequestParam("senha") String senha) {
+        try{
+            Usuario user = usuarioRepository.findByLogin(usuario);
+
+            if(!Objects.isNull(user)){
+                if(new BCryptPasswordEncoder().matches(senha, user.getSenha())) {
+                    repository.softDelete(id);
+                    return new ResponseEntity(HttpStatus.OK);
+                }
+            }
+
+            return new ResponseEntity<>("Não permitido para esse usuário", HttpStatus.FORBIDDEN);
+        }catch (Exception ex) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 
 
