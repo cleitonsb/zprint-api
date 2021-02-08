@@ -13,10 +13,15 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public interface ServicoRepository extends JpaRepository<Servico, Long> {
 
-    @Query("select s from Servico s where s.usuario.nome like %?1% and s.situacao = true")
+    @Query("select s from Servico s where (s.usuario.nome like %?1% " +
+        "or s.pessoa.nome like %?1% " +
+        "or s.id = ?1 " +
+        ") and s.situacao = true")
     Iterable<Servico> findByParam(String param);
 
-    @Query("select s from Servico s where s.usuario.nome like %?1% and s.situacao = true order by s.id desc")
+    @Query("select s from Servico s where (upper(s.usuario.nome) like %?1% " +
+            "or upper(s.pessoa.nome) like %?1% " +
+            ") and s.situacao = true order by s.id desc")
     Page<Servico> findByParam(String param, Pageable page);
 
     @Query("select s from Servico s where s.situacao = true order by s.id desc")

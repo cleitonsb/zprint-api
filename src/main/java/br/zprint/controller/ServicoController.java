@@ -1,6 +1,10 @@
 package br.zprint.controller;
 
+import br.zprint.model.Equipamento;
+import br.zprint.model.Pessoa;
 import br.zprint.model.Servico;
+import br.zprint.repository.EquipamentoRepository;
+import br.zprint.repository.PessoaRepository;
 import br.zprint.repository.ServicoItemRepository;
 import br.zprint.repository.ServicoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +28,12 @@ public class ServicoController {
     @Autowired
     ServicoItemRepository itemRepository;
 
+    @Autowired
+    PessoaRepository pessoaRepository;
+
+    @Autowired
+    EquipamentoRepository equipamentoRepository;
+
     @GetMapping(value = "/{id}", produces = "application/json")
     public ResponseEntity init(@PathVariable(value = "id") Long id) {
         Optional<Servico> servico = repository.findById(id);
@@ -38,7 +48,7 @@ public class ServicoController {
         Page<Servico> list;
 
         if(param != null) {
-            list = repository.findByParam(param, pageRequest);
+            list = repository.findByParam(param.toUpperCase(), pageRequest);
         }else{
             list = repository.findAll(pageRequest);
         }
@@ -57,11 +67,23 @@ public class ServicoController {
 
         itemRepository.deletByServico(servico.getId());
 
+        /** Esse carai não montou o objeto corretamente, então estamos salvando cada entidade separada */
+        Pessoa pessoaStorade = pessoaRepository.save(servico.getPessoa());
+        servico.setPessoa(pessoaStorade);
+        servico.getEquipamento().setPessoa(pessoaStorade);
+
+        /** Equipamento */
+        if(servico.getEquipamento() != null) {
+            servico.setEquipamento(equipamentoRepository.save(servico.getEquipamento()));
+        }
+
         for (int i = 0; i < servico.getItensServico().size(); i++) {
             servico.getItensServico().get(i).setServico(servico);
         }
 
         Servico servicoStorade = repository.save(servico);
+
+
         return new ResponseEntity<>(servicoStorade, HttpStatus.OK);
     }
 

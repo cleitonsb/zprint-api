@@ -1,5 +1,7 @@
 package br.zprint.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
@@ -13,25 +15,29 @@ public class Equipamento implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private String nome;
     private String marca;
     private String modelo;
     private String serie;
+    private String descricao;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "pessoa_id", nullable = false)
     private Pessoa pessoa;
 
-    public Equipamento() {
-    }
+    @Column(columnDefinition = "boolean default true")
+    private Boolean situacao = true;
 
-    public Equipamento(Long id, String nome, String marca, String modelo, String serie, Pessoa pessoa) {
+    public Equipamento() {}
+
+    public Equipamento(Long id, String marca, String modelo, String serie, String descricao, Pessoa pessoa, Boolean situacao) {
         this.id = id;
-        this.nome = nome;
         this.marca = marca;
         this.modelo = modelo;
         this.serie = serie;
+        this.descricao = descricao;
         this.pessoa = pessoa;
+        this.situacao = situacao;
     }
 
     public Long getId() {
@@ -40,14 +46,6 @@ public class Equipamento implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
     }
 
     public String getMarca() {
@@ -74,6 +72,14 @@ public class Equipamento implements Serializable {
         this.serie = serie;
     }
 
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
+    }
+
     public Pessoa getPessoa() {
         return pessoa;
     }
@@ -82,28 +88,37 @@ public class Equipamento implements Serializable {
         this.pessoa = pessoa;
     }
 
+    public Boolean getSituacao() {
+        return situacao;
+    }
+
+    public void setSituacao(Boolean situacao) {
+        this.situacao = situacao;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Equipamento that = (Equipamento) o;
-        return Objects.equals(id, that.id) && Objects.equals(nome, that.nome) && Objects.equals(marca, that.marca) && Objects.equals(modelo, that.modelo) && Objects.equals(serie, that.serie) && Objects.equals(pessoa, that.pessoa);
+        return Objects.equals(id, that.id) && Objects.equals(marca, that.marca) && Objects.equals(modelo, that.modelo) && Objects.equals(serie, that.serie) && Objects.equals(descricao, that.descricao) && Objects.equals(pessoa, that.pessoa) && Objects.equals(situacao, that.situacao);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, nome, marca, modelo, serie, pessoa);
+        return Objects.hash(id, marca, modelo, serie, descricao, pessoa, situacao);
     }
 
     @Override
     public String toString() {
         return "Equipamento{" +
                 "id=" + id +
-                ", nome='" + nome + '\'' +
                 ", marca='" + marca + '\'' +
                 ", modelo='" + modelo + '\'' +
                 ", serie='" + serie + '\'' +
+                ", descricao='" + descricao + '\'' +
                 ", pessoa=" + pessoa +
+                ", situacao=" + situacao +
                 '}';
     }
 }

@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
-@Table(name = "servico")
+@Table(name = "servicos")
 public class Servico implements Serializable {
     private static final Long serialVersionUID = 1L;
 
@@ -54,13 +54,14 @@ public class Servico implements Serializable {
     public Servico() {
     }
 
-    public Servico(Long id, Timestamp data, Double total, Double desconto, Boolean situacao, Usuario usuario, Pessoa pessoa, List<ServicoItem> itensServico, List<Conta> contas, Equipamento equipamento) {
+    public Servico(Long id, Timestamp data, Double total, Double desconto, Boolean situacao, Usuario usuario, Usuario responsavel, Pessoa pessoa, List<ServicoItem> itensServico, List<Conta> contas, Equipamento equipamento) {
         this.id = id;
         this.data = data;
         this.total = total;
         this.desconto = desconto;
         this.situacao = situacao;
         this.usuario = usuario;
+        this.responsavel = responsavel;
         this.pessoa = pessoa;
         this.itensServico = itensServico;
         this.contas = contas;
@@ -108,12 +109,19 @@ public class Servico implements Serializable {
     }
 
     public UsuarioOpDTO getUsuario() {
-        UsuarioOpDTO usuarioOpDTO = new UsuarioOpDTO(usuario);
-        return usuarioOpDTO;
+        return new UsuarioOpDTO(usuario);
     }
 
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
+    }
+
+    public UsuarioOpDTO getResponsavel() {
+        return new UsuarioOpDTO(usuario);
+    }
+
+    public void setResponsavel(Usuario responsavel) {
+        this.responsavel = responsavel;
     }
 
     public Pessoa getPessoa() {
@@ -153,20 +161,12 @@ public class Servico implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Servico servico = (Servico) o;
-        return Objects.equals(id, servico.id) &&
-                Objects.equals(data, servico.data) &&
-                Objects.equals(total, servico.total) &&
-                Objects.equals(desconto, servico.desconto) &&
-                Objects.equals(situacao, servico.situacao) &&
-                Objects.equals(usuario, servico.usuario) &&
-                Objects.equals(pessoa, servico.pessoa) &&
-                Objects.equals(itensServico, servico.itensServico) &&
-                Objects.equals(contas, servico.contas);
+        return Objects.equals(id, servico.id) && Objects.equals(data, servico.data) && Objects.equals(total, servico.total) && Objects.equals(desconto, servico.desconto) && Objects.equals(situacao, servico.situacao) && Objects.equals(usuario, servico.usuario) && Objects.equals(responsavel, servico.responsavel) && Objects.equals(pessoa, servico.pessoa) && Objects.equals(itensServico, servico.itensServico) && Objects.equals(contas, servico.contas) && Objects.equals(equipamento, servico.equipamento);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, data, total, desconto, situacao, usuario, pessoa, itensServico, contas);
+        return Objects.hash(id, data, total, desconto, situacao, usuario, responsavel, pessoa, itensServico, contas, equipamento);
     }
 
     @Override
@@ -178,9 +178,11 @@ public class Servico implements Serializable {
                 ", desconto=" + desconto +
                 ", situacao=" + situacao +
                 ", usuario=" + usuario +
+                ", responsavel=" + responsavel +
                 ", pessoa=" + pessoa +
                 ", itensServico=" + itensServico +
                 ", contas=" + contas +
+                ", equipamento=" + equipamento +
                 '}';
     }
 }

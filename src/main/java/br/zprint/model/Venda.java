@@ -106,8 +106,7 @@ public class Venda implements Serializable {
     }
 
     public UsuarioOpDTO getUsuario() {
-        UsuarioOpDTO usuarioOpDTO = new UsuarioOpDTO(usuario);
-        return usuarioOpDTO;
+        return new UsuarioOpDTO(usuario);
     }
 
     public void setUsuario(Usuario usuario) {
