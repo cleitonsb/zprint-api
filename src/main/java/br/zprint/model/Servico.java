@@ -18,6 +18,9 @@ public class Servico implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private Timestamp data;
+    private Timestamp previsao;
+    private String relato;
+    private String acessorios;
 
     @Column(columnDefinition = "Decimal(10,2) default '0'")
     private Double total;
@@ -51,12 +54,14 @@ public class Servico implements Serializable {
     @JoinColumn(name = "equipamento_id", nullable = true)
     private Equipamento equipamento;
 
-    public Servico() {
-    }
+    public Servico(){}
 
-    public Servico(Long id, Timestamp data, Double total, Double desconto, Boolean situacao, Usuario usuario, Usuario responsavel, Pessoa pessoa, List<ServicoItem> itensServico, List<Conta> contas, Equipamento equipamento) {
+    public Servico(Long id, Timestamp data, Timestamp previsao, String relato, String acessorios, Double total, Double desconto, Boolean situacao, Usuario usuario, Usuario responsavel, Pessoa pessoa, List<ServicoItem> itensServico, List<Conta> contas, Equipamento equipamento) {
         this.id = id;
         this.data = data;
+        this.previsao = previsao;
+        this.relato = relato;
+        this.acessorios = acessorios;
         this.total = total;
         this.desconto = desconto;
         this.situacao = situacao;
@@ -156,17 +161,41 @@ public class Servico implements Serializable {
         this.equipamento = equipamento;
     }
 
+    public Timestamp getPrevisao() {
+        return previsao;
+    }
+
+    public void setPrevisao(Timestamp previsao) {
+        this.previsao = previsao;
+    }
+
+    public String getRelato() {
+        return relato;
+    }
+
+    public void setRelato(String relato) {
+        this.relato = relato;
+    }
+
+    public String getAcessorios() {
+        return acessorios;
+    }
+
+    public void setAcessorios(String acessorios) {
+        this.acessorios = acessorios;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Servico servico = (Servico) o;
-        return Objects.equals(id, servico.id) && Objects.equals(data, servico.data) && Objects.equals(total, servico.total) && Objects.equals(desconto, servico.desconto) && Objects.equals(situacao, servico.situacao) && Objects.equals(usuario, servico.usuario) && Objects.equals(responsavel, servico.responsavel) && Objects.equals(pessoa, servico.pessoa) && Objects.equals(itensServico, servico.itensServico) && Objects.equals(contas, servico.contas) && Objects.equals(equipamento, servico.equipamento);
+        return Objects.equals(id, servico.id) && Objects.equals(data, servico.data) && Objects.equals(previsao, servico.previsao) && Objects.equals(relato, servico.relato) && Objects.equals(acessorios, servico.acessorios) && Objects.equals(total, servico.total) && Objects.equals(desconto, servico.desconto) && Objects.equals(situacao, servico.situacao) && Objects.equals(usuario, servico.usuario) && Objects.equals(responsavel, servico.responsavel) && Objects.equals(pessoa, servico.pessoa) && Objects.equals(itensServico, servico.itensServico) && Objects.equals(contas, servico.contas) && Objects.equals(equipamento, servico.equipamento);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, data, total, desconto, situacao, usuario, responsavel, pessoa, itensServico, contas, equipamento);
+        return Objects.hash(id, data, previsao, relato, acessorios, total, desconto, situacao, usuario, responsavel, pessoa, itensServico, contas, equipamento);
     }
 
     @Override
@@ -174,6 +203,9 @@ public class Servico implements Serializable {
         return "Servico{" +
                 "id=" + id +
                 ", data=" + data +
+                ", previsao=" + previsao +
+                ", relato='" + relato + '\'' +
+                ", acessorios='" + acessorios + '\'' +
                 ", total=" + total +
                 ", desconto=" + desconto +
                 ", situacao=" + situacao +

@@ -74,7 +74,9 @@ public class ServicoController {
 
         /** Equipamento */
         if(servico.getEquipamento() != null) {
-            servico.setEquipamento(equipamentoRepository.save(servico.getEquipamento()));
+            if(servico.getEquipamento().getModelo() != null) {
+                servico.setEquipamento(equipamentoRepository.save(servico.getEquipamento()));
+            }
         }
 
         for (int i = 0; i < servico.getItensServico().size(); i++) {
