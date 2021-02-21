@@ -67,17 +67,20 @@ public class ServicoController {
 
         itemRepository.deletByServico(servico.getId());
 
+        for (int i = 0; i < servico.getPessoa().getEquipamentos().size(); i++) {
+            servico.getPessoa().getEquipamentos().get(i).setPessoa(servico.getPessoa());
+        }
+
         /** Esse carai não montou o objeto corretamente, então estamos salvando cada entidade separada */
-        Pessoa pessoaStorade = pessoaRepository.save(servico.getPessoa());
-        servico.setPessoa(pessoaStorade);
-        servico.getEquipamento().setPessoa(pessoaStorade);
+//        Pessoa pessoaStorade = pessoaRepository.save(servico.getPessoa());
+//        servico.setPessoa(pessoaStorade);
 
         /** Equipamento */
-        if(servico.getEquipamento() != null) {
-            if(servico.getEquipamento().getModelo() != null) {
-                servico.setEquipamento(equipamentoRepository.save(servico.getEquipamento()));
-            }
-        }
+//        if(servico.getEquipamento() != null) {
+//            if(servico.getEquipamento().getModelo() != null) {
+//                servico.setEquipamento(equipamentoRepository.save(servico.getEquipamento()));
+//            }
+//        }
 
         for (int i = 0; i < servico.getItensServico().size(); i++) {
             servico.getItensServico().get(i).setServico(servico);

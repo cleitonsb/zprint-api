@@ -1,5 +1,6 @@
 package br.zprint.model;
 
+import br.zprint.dto.EquipamentoDTO;
 import br.zprint.dto.UsuarioOpDTO;
 
 import javax.persistence.*;
@@ -113,16 +114,16 @@ public class Servico implements Serializable {
         this.situacao = situacao;
     }
 
-    public UsuarioOpDTO getUsuario() {
-        return new UsuarioOpDTO(usuario);
+    public Usuario getUsuario() {
+        return usuario;
     }
 
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
     }
 
-    public UsuarioOpDTO getResponsavel() {
-        return new UsuarioOpDTO(usuario);
+    public Usuario getResponsavel() {
+        return responsavel;
     }
 
     public void setResponsavel(Usuario responsavel) {

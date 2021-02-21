@@ -1,5 +1,7 @@
 package br.zprint.model;
 
+import br.zprint.dto.EquipamentoDTO;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.*;
