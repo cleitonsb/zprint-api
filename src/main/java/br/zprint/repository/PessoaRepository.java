@@ -1,5 +1,6 @@
 package br.zprint.repository;
 
+import br.zprint.dto.PessoaDTO;
 import br.zprint.model.Pessoa;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 public interface PessoaRepository extends JpaRepository<Pessoa, Long> {
 
     @Query("select p from Pessoa p where (p.email like %?1% or p.nome like %?1% or p.celular like %?1% or p.telefone like %?1%) and p.situacao = true")
-    Iterable<Pessoa> findByParam(String param);
+    Iterable<PessoaDTO> findByParam(String param);
 
     @Query("select p from Pessoa p where (p.email like %?1% or p.nome like %?1% or p.celular like %?1% or p.telefone like %?1%) and p.situacao = true")
     Page<Pessoa> findByParam(String param, Pageable page);

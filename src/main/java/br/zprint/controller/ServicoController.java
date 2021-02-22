@@ -1,5 +1,6 @@
 package br.zprint.controller;
 
+import br.zprint.dto.ServicoDTO;
 import br.zprint.model.Equipamento;
 import br.zprint.model.Pessoa;
 import br.zprint.model.Servico;
@@ -37,7 +38,7 @@ public class ServicoController {
     @GetMapping(value = "/{id}", produces = "application/json")
     public ResponseEntity init(@PathVariable(value = "id") Long id) {
         Optional<Servico> servico = repository.findById(id);
-        return new ResponseEntity<>(servico.get(), HttpStatus.OK);
+        return new ResponseEntity<>(new ServicoDTO(servico.get()), HttpStatus.OK);
     }
 
     @GetMapping(value = {"/page/{page}", "/page/{page}/busca/{param}"}, produces = "application/json")

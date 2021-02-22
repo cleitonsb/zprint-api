@@ -1,5 +1,6 @@
 package br.zprint.controller;
 
+import br.zprint.dto.PessoaDTO;
 import br.zprint.model.Pessoa;
 import br.zprint.repository.PessoaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,11 +44,11 @@ public class PessoaController {
     }
 
     @GetMapping(value = {"", "/busca/{param}"}, produces = "application/json")
-    public ResponseEntity<List<Pessoa>> listByAll(@PathVariable(value = "param", required = false) String param) {
+    public ResponseEntity<List<PessoaDTO>> listByAll(@PathVariable(value = "param", required = false) String param) {
         param = (param != null) ? param.toUpperCase() : "";
 
-        List<Pessoa> list = (List<Pessoa>) repository.findByParam(param);
-        return new ResponseEntity<List<Pessoa>>(list, HttpStatus.OK);
+        List<PessoaDTO> list = (List<PessoaDTO>) repository.findByParam(param);
+        return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
     @PostMapping(value = "", produces = "application/json")
@@ -71,5 +72,4 @@ public class PessoaController {
             return ResponseEntity.badRequest().build();
         }
     }
-
 }

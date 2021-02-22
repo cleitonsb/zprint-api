@@ -1,5 +1,6 @@
 package br.zprint.controller;
 
+import br.zprint.dto.EquipamentoDTO;
 import br.zprint.repository.EquipamentoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,7 +21,7 @@ public class EquipamentoController {
 
     @GetMapping(value = "/{idPessoa}", produces = "application/json")
     public ResponseEntity init(@PathVariable(value = "idPessoa") Long idPessoa) {
-        List listEquipamentos = repository.findByPessoa(idPessoa);
+        List<EquipamentoDTO> listEquipamentos = repository.findByPessoa(idPessoa);
         return new ResponseEntity<>(listEquipamentos, HttpStatus.OK);
     }
 

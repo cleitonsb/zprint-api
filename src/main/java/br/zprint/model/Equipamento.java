@@ -20,7 +20,7 @@ public class Equipamento implements Serializable {
     private String serie;
     private String descricao;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "pessoa_id", nullable = false)
     private Pessoa pessoa;
 

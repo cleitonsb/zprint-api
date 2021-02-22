@@ -2,7 +2,6 @@ package br.zprint.dto;
 
 import br.zprint.model.*;
 
-import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.ArrayList;

@@ -21,7 +21,7 @@ public class PessoaDTO implements Serializable {
     private List<Endereco> enderecos = new ArrayList<>();
     private Boolean cliente = false;
     private Boolean fornecedor = false;
-    private List<EquipamentoDTO> equipamentos;
+    private List<EquipamentoDTO> equipamentos = new ArrayList<>();
 
     public PessoaDTO(Pessoa pessoa) {
         this.id = pessoa.getId();
