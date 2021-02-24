@@ -108,14 +108,8 @@ public class ServicoItem implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ServicoItem that = (ServicoItem) o;
-        return Objects.equals(id, that.id) &&
-                Objects.equals(preco, that.preco) &&
-                Objects.equals(custo, that.custo) &&
-                Objects.equals(qt, that.qt) &&
-                Objects.equals(servico, that.servico) &&
-                Objects.equals(produto, that.produto) &&
-                Objects.equals(situacao, that.situacao);
+        ServicoItem item = (ServicoItem) o;
+        return Objects.equals(id, item.id) && Objects.equals(preco, item.preco) && Objects.equals(custo, item.custo) && Objects.equals(qt, item.qt) && Objects.equals(servico, item.servico) && Objects.equals(produto, item.produto) && Objects.equals(situacao, item.situacao);
     }
 
     @Override

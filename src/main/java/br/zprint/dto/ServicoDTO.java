@@ -22,7 +22,7 @@ public class ServicoDTO implements Serializable {
     private UsuarioOpDTO responsavel;
     private PessoaDTO pessoa;
     private List<ServicoItem> itensServico;
-    private List<Conta> contas = new ArrayList<>();
+    private List<ContaDTO> contas = new ArrayList<>();
     private EquipamentoDTO equipamento;
 
     public ServicoDTO(Servico servico) {
@@ -37,8 +37,14 @@ public class ServicoDTO implements Serializable {
         this.responsavel = new UsuarioOpDTO(servico.getResponsavel());
         this.pessoa = new PessoaDTO(servico.getPessoa());
         this.itensServico = servico.getItensServico();
-        this.contas = servico.getContas();
-        this.equipamento = new EquipamentoDTO(servico.getEquipamento());
+
+        for (Conta conta : servico.getContas()) {
+            this.contas.add(new ContaDTO(conta));
+        }
+
+        if(servico.getEquipamento() != null) {
+            this.equipamento = new EquipamentoDTO(servico.getEquipamento());
+        }
     }
 
     public Long getId() {
@@ -129,11 +135,11 @@ public class ServicoDTO implements Serializable {
         this.itensServico = itensServico;
     }
 
-    public List<Conta> getContas() {
+    public List<ContaDTO> getContas() {
         return contas;
     }
 
-    public void setContas(List<Conta> contas) {
+    public void setContas(List<ContaDTO> contas) {
         this.contas = contas;
     }
 

@@ -1,13 +1,11 @@
 package br.zprint.controller;
 
 import br.zprint.dto.ServicoDTO;
+import br.zprint.model.Conta;
 import br.zprint.model.Equipamento;
 import br.zprint.model.Pessoa;
 import br.zprint.model.Servico;
-import br.zprint.repository.EquipamentoRepository;
-import br.zprint.repository.PessoaRepository;
-import br.zprint.repository.ServicoItemRepository;
-import br.zprint.repository.ServicoRepository;
+import br.zprint.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -35,23 +33,28 @@ public class ServicoController {
     @Autowired
     EquipamentoRepository equipamentoRepository;
 
+    @Autowired
+    ContaRepository contaRepository;
+
     @GetMapping(value = "/{id}", produces = "application/json")
-    public ResponseEntity init(@PathVariable(value = "id") Long id) {
+    public ResponseEntity<ServicoDTO> init(@PathVariable(value = "id") Long id) {
         Optional<Servico> servico = repository.findById(id);
-        return new ResponseEntity<>(new ServicoDTO(servico.get()), HttpStatus.OK);
+        ServicoDTO servicoDto = new ServicoDTO(servico.get());
+
+        return new ResponseEntity<>(servicoDto, HttpStatus.OK);
     }
 
     @GetMapping(value = {"/page/{page}", "/page/{page}/busca/{param}"}, produces = "application/json")
-    public ResponseEntity<Page<Servico>> list(@PathVariable(value = "page", required = false) Integer page, @PathVariable(value = "param", required = false) String param) {
+    public ResponseEntity<Page<ServicoDTO>> list(@PathVariable(value = "page", required = false) Integer page, @PathVariable(value = "param", required = false) String param) {
 
         PageRequest pageRequest = PageRequest.of(page-1, 5);
 
-        Page<Servico> list;
+        Page<ServicoDTO> list;
 
         if(param != null) {
             list = repository.findByParam(param.toUpperCase(), pageRequest);
         }else{
-            list = repository.findAll(pageRequest);
+            list = repository.findAllDTO(pageRequest);
         }
 
         return new ResponseEntity<>(list, HttpStatus.OK);
@@ -64,24 +67,40 @@ public class ServicoController {
     }
 
     @PostMapping(value = "", produces = "application/json")
-    public ResponseEntity<Servico> store(@RequestBody Servico servico) {
+    public ResponseEntity store(@RequestBody Servico servico) {
 
         itemRepository.deletByServico(servico.getId());
 
-        for (int i = 0; i < servico.getPessoa().getEquipamentos().size(); i++) {
-            servico.getPessoa().getEquipamentos().get(i).setPessoa(servico.getPessoa());
+        /** Esse carai não montou o objeto corretamente, então estamos salvando cada entidade separada */
+        if(servico.getPessoa() != null) {
+            if(servico.getPessoa().getId() == null) {
+                Pessoa pessoaStorade = pessoaRepository.save(servico.getPessoa());
+                servico.setPessoa(pessoaStorade);
+            }
         }
 
-        /** Esse carai não montou o objeto corretamente, então estamos salvando cada entidade separada */
-//        Pessoa pessoaStorade = pessoaRepository.save(servico.getPessoa());
-//        servico.setPessoa(pessoaStorade);
-
         /** Equipamento */
-//        if(servico.getEquipamento() != null) {
-//            if(servico.getEquipamento().getModelo() != null) {
-//                servico.setEquipamento(equipamentoRepository.save(servico.getEquipamento()));
-//            }
-//        }
+        if(servico.getEquipamento() != null) {
+            if(servico.getEquipamento().getId() == null){
+                servico.getEquipamento().setPessoa(servico.getPessoa());
+                Equipamento equipamentoStorade = equipamentoRepository.save(servico.getEquipamento());
+
+                servico.setEquipamento(equipamentoStorade);
+            }
+        }
+
+        /**
+         * Contas
+         */
+
+        if(servico.getContas() != null) {
+            for (int i = 0; i < servico.getContas().size(); i++) {
+                if(servico.getContas().get(i).getId() != null) {
+                    Optional<Conta> contasOpt = contaRepository.findById(servico.getContas().get(i).getId());
+                    servico.getContas().set(i, contasOpt.get());
+                }
+            }
+        }
 
         for (int i = 0; i < servico.getItensServico().size(); i++) {
             servico.getItensServico().get(i).setServico(servico);
@@ -89,9 +108,6 @@ public class ServicoController {
 
         Servico servicoStorade = repository.save(servico);
 
-
-        return new ResponseEntity<>(servicoStorade, HttpStatus.OK);
+        return new ResponseEntity<>(new ServicoDTO(servicoStorade), HttpStatus.OK);
     }
-
-
 }
