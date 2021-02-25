@@ -23,11 +23,16 @@ public interface ContaRepository extends CrudRepository<Conta, Long> {
     @Query("select c from Conta c where c.situacao = true order by c.id desc")
     Page<Conta> findAll(Pageable page);
 
-    @Query(value = "select vc.venda_id, v.nome, c.valor, c.troco\n" +
+    @Query(value = "select vc.venda_id, v.nome, c.valor, c.troco, sc.servico_id, p.nome as nomePessoa\n" +
             "from contas c\n" +
-            "         inner join vendas_contas vc on c.id = vc.conta_id\n" +
-            "         inner join vendas v on vc.venda_id = v.id\n" +
-            "where c.caixa_id is null and c.situacao = true", nativeQuery = true)
+            "         left join vendas_contas vc on c.id = vc.conta_id\n" +
+            "         left join vendas v on vc.venda_id = v.id\n" +
+            "         left join servicos_contas sc on c.id = sc.conta_id\n" +
+            "         left join servicos s on sc.servico_id = s.id\n" +
+            "         left join pessoas p on s.pessoa_id = p.id\n" +
+            "\n" +
+            "where c.caixa_id is null\n" +
+            "  and c.situacao = true and (vc.venda_id is not null or sc.servico_id is not null)", nativeQuery = true)
     List findOpen();
 
     @Query("select c from Conta c where c.caixa.id = ?1 and c.situacao = true")
