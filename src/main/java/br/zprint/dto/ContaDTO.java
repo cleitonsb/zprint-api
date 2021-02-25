@@ -18,6 +18,7 @@ public class ContaDTO implements Serializable {
     private PlanoConta planoConta;
     private String descricao;
     private Double troco;
+    private Boolean pago = false;
 
     public ContaDTO(Conta conta) {
         this.id = conta.getId();
@@ -29,6 +30,10 @@ public class ContaDTO implements Serializable {
         this.planoConta = conta.getPlanoConta();
         this.descricao = conta.getDescricao();
         this.troco = conta.getTroco();
+
+        if(conta.getCaixa() != null) {
+            this.pago = true;
+        }
     }
 
     public Long getId() {
@@ -101,5 +106,13 @@ public class ContaDTO implements Serializable {
 
     public void setTroco(Double troco) {
         this.troco = troco;
+    }
+
+    public Boolean getPago() {
+        return pago;
+    }
+
+    public void setPago(Boolean pago) {
+        this.pago = pago;
     }
 }

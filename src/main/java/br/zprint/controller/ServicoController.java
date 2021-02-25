@@ -89,10 +89,7 @@ public class ServicoController {
             }
         }
 
-        /**
-         * Contas
-         */
-
+        /** Contas */
         if(servico.getContas() != null) {
             for (int i = 0; i < servico.getContas().size(); i++) {
                 if(servico.getContas().get(i).getId() != null) {
