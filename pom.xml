@@ -10,7 +10,7 @@
     </parent>
     <groupId>br.zprint</groupId>
     <artifactId>br-zprint</artifactId>
-    <version>0.0.1</version>
+    <version>0.0.4</version>
     <packaging>jar</packaging>
     <name>br-zprint</name>
     <description>Frente de caixa</description>
